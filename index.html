@@ -347,6 +347,144 @@
       cursor: pointer;
     }
 
+        /* HALAMAN MENU */
+
+    .menu-page {
+      display: none;
+      width: 100%;
+      max-width: 520px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 24px 20px 110px;
+    }
+
+    .menu-page.show {
+      display: block;
+    }
+
+    .menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .menu-header-info {
+      text-align: left;
+    }
+
+    .menu-header-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #3d541b;
+      margin-bottom: 4px;
+    }
+
+    .menu-header-outlet {
+      font-size: 12px;
+      color: #687653;
+    }
+
+    .menu-back {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 13px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #40551d;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 5px 14px rgba(49, 76, 20, 0.1);
+    }
+
+    .menu-loading {
+      padding: 40px 20px;
+      text-align: center;
+      color: #687653;
+      font-size: 14px;
+    }
+
+    .menu-error {
+      padding: 30px 20px;
+      text-align: center;
+      color: #8b4d3f;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .menu-category {
+      margin-bottom: 26px;
+    }
+
+    .menu-category-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #40551d;
+      margin-bottom: 13px;
+      text-align: left;
+    }
+
+    .menu-jenis {
+      font-size: 14px;
+      font-weight: 800;
+      color: #687653;
+      margin: 16px 0 10px;
+      text-align: left;
+    }
+
+    .menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .menu-card {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 12px;
+      border-radius: 17px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 7px 18px rgba(49, 76, 20, 0.1);
+    }
+
+    .menu-image {
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      object-fit: cover;
+      background: #eff8c9;
+    }
+
+    .menu-info {
+      min-width: 0;
+      flex: 1;
+      text-align: left;
+    }
+
+    .menu-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #40551d;
+      line-height: 1.3;
+      margin-bottom: 5px;
+    }
+
+    .menu-size {
+      font-size: 11px;
+      color: #7a8864;
+      margin-bottom: 6px;
+    }
+
+    .menu-price {
+      font-size: 14px;
+      font-weight: 800;
+      color: #65a83f;
+    }
+
     /* MOBILE */
     @media (max-width: 480px) {
 
@@ -500,6 +638,51 @@
             </div>
           </div>
         </button>
+
+      </div>
+
+    </section>
+
+        <!-- HALAMAN MENU -->
+    <section
+      class="menu-page"
+      id="menuPage"
+    >
+
+      <div class="menu-header">
+
+        <div class="menu-header-info">
+
+          <div class="menu-header-title">
+            MENU
+          </div>
+
+          <div
+            class="menu-header-outlet"
+            id="menuOutletName"
+          >
+            Memuat outlet...
+          </div>
+
+        </div>
+
+        <button
+          class="menu-back"
+          onclick="kembaliKeLanding()"
+        >
+          KEMBALI
+        </button>
+
+      </div>
+
+
+      <div
+        id="menuList"
+      >
+
+        <div class="menu-loading">
+          Memuat menu...
+        </div>
 
       </div>
 
@@ -734,10 +917,304 @@
         namaCabang
       );
 
-      alert(
-        "Outlet " +
-        namaCabang +
-        " berhasil dipilih. Halaman MENU akan dibuat di tahap berikutnya."
+      const popup =
+        document.getElementById("outletMessage");
+
+      popup.classList.remove("show");
+
+      bukaMenu();
+
+    }
+
+        /* BUKA HALAMAN MENU */
+
+    function bukaMenu() {
+
+      document.querySelector(".content").style.display =
+        "none";
+
+      document.querySelector(".visual-footer").style.display =
+        "none";
+
+      document.getElementById("menuPage")
+        .classList.add("show");
+
+      const namaCabang =
+        localStorage.getItem(
+          "YT_NAMA_CABANG"
+        );
+
+      document.getElementById(
+        "menuOutletName"
+      ).textContent =
+        namaCabang || "YourTea";
+
+      loadMenu();
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+    }
+
+
+    /* AMBIL DATA MENU DARI API */
+
+    async function loadMenu() {
+
+      const menuList =
+        document.getElementById(
+          "menuList"
+        );
+
+      menuList.innerHTML = `
+        <div class="menu-loading">
+          Memuat menu...
+        </div>
+      `;
+
+      try {
+
+        const response =
+          await fetch(
+            API_URL + "?action=getMenu"
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            "Gagal menghubungi API."
+          );
+        }
+
+        const result =
+          await response.json();
+
+        if (
+          result.status !== "success" ||
+          !Array.isArray(result.data)
+        ) {
+          throw new Error(
+            "Data menu tidak valid."
+          );
+        }
+
+        if (result.data.length === 0) {
+
+          menuList.innerHTML = `
+            <div class="menu-error">
+              Belum ada menu yang aktif.
+            </div>
+          `;
+
+          return;
+
+        }
+
+        tampilkanMenu(
+          result.data
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        menuList.innerHTML = `
+          <div class="menu-error">
+            Gagal memuat menu.
+            <br>
+            Silakan coba lagi.
+          </div>
+        `;
+
+      }
+
+    }
+
+
+    /* TAMPILKAN MENU */
+
+    function tampilkanMenu(
+      data
+    ) {
+
+      const menuList =
+        document.getElementById(
+          "menuList"
+        );
+
+      menuList.innerHTML = "";
+
+      const kategoriMap = {};
+
+      data.forEach(
+        function(menu) {
+
+          if (!kategoriMap[menu.kategori]) {
+
+            kategoriMap[menu.kategori] = {};
+
+          }
+
+          if (
+            !kategoriMap[menu.kategori][menu.jenis]
+          ) {
+
+            kategoriMap[menu.kategori][menu.jenis] =
+              [];
+
+          }
+
+          kategoriMap[menu.kategori][menu.jenis]
+            .push(menu);
+
+        }
+      );
+
+
+      Object.keys(
+        kategoriMap
+      ).forEach(
+        function(kategori) {
+
+          const kategoriSection =
+            document.createElement(
+              "div"
+            );
+
+          kategoriSection.className =
+            "menu-category";
+
+          kategoriSection.innerHTML = `
+            <div class="menu-category-title">
+              ${escapeHTML(kategori)}
+            </div>
+          `;
+
+
+          Object.keys(
+            kategoriMap[kategori]
+          ).forEach(
+            function(jenis) {
+
+              const jenisTitle =
+                document.createElement(
+                  "div"
+                );
+
+              jenisTitle.className =
+                "menu-jenis";
+
+              jenisTitle.textContent =
+                jenis;
+
+
+              const menuListJenis =
+                document.createElement(
+                  "div"
+                );
+
+              menuListJenis.className =
+                "menu-list";
+
+
+              kategoriMap[kategori][jenis]
+                .forEach(
+                  function(menu) {
+
+                    const card =
+                      document.createElement(
+                        "div"
+                      );
+
+                    card.className =
+                      "menu-card";
+
+
+                    const gambar =
+                      menu.gambar ||
+                      "BELUM ADA GAMBAR.png";
+
+
+                    const harga =
+                      Number(
+                        String(menu.harga)
+                          .replace(/[^\d]/g, "")
+                      );
+
+
+                    card.innerHTML = `
+                      <img
+                        src="${escapeHTML(gambar)}"
+                        alt="${escapeHTML(menu.nama_menu)}"
+                        class="menu-image"
+                        onerror="this.src='BELUM%20ADA%20GAMBAR.png'"
+                      >
+
+                      <div class="menu-info">
+
+                        <div class="menu-name">
+                          ${escapeHTML(menu.nama_menu)}
+                        </div>
+
+                        <div class="menu-size">
+                          ${escapeHTML(menu.variasi_ukuran || "")}
+                        </div>
+
+                        <div class="menu-price">
+                          Rp${harga.toLocaleString("id-ID")}
+                        </div>
+
+                      </div>
+                    `;
+
+                    menuListJenis.appendChild(
+                      card
+                    );
+
+                  }
+                );
+
+
+              kategoriSection.appendChild(
+                jenisTitle
+              );
+
+              kategoriSection.appendChild(
+                menuListJenis
+              );
+
+            }
+          );
+
+
+          menuList.appendChild(
+            kategoriSection
+          );
+
+        }
+      );
+
+    }
+
+
+    /* KEMBALI KE LANDING */
+
+    function kembaliKeLanding() {
+
+      document.getElementById(
+        "menuPage"
+      ).classList.remove("show");
+
+      document.querySelector(".content").style.display =
+        "flex";
+
+      document.querySelector(".visual-footer").style.display =
+        "flex";
+
+      window.scrollTo(
+        0,
+        0
       );
 
     }
