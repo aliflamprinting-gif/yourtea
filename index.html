@@ -497,6 +497,42 @@
       color: white;
     }
 
+
+    .menu-jenis-filter {
+      width: 100%;
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding: 4px 0 2px;
+      scrollbar-width: none;
+    }
+
+
+    .menu-jenis-filter::-webkit-scrollbar {
+      display: none;
+    }
+
+
+    .menu-jenis-filter-button {
+      flex-shrink: 0;
+      border: 1px solid #e5e9e2;
+      border-radius: 18px;
+      padding: 7px 12px;
+      background: #f7f9f5;
+      color: #6a7464;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+
+    .menu-jenis-filter-button.active {
+      border-color: #202d1b;
+      background: #202d1b;
+      color: white;
+    }
+
     .menu-content {
       padding-top: 18px;
     }
@@ -1019,6 +1055,12 @@
 
         </div>
 
+
+        <div
+          class="menu-jenis-filter"
+          id="menuJenisFilter"
+        ></div>
+
       </div>
 
 
@@ -1516,13 +1558,13 @@
     }
 
 
-    /* BUAT DAFTAR JENIS */
+    /* BUAT DAFTAR JENIS SESUAI KATEGORI */
 
     function buatDaftarJenis() {
 
-      const jenisList =
+      const jenisFilter =
         document.getElementById(
-          "jenisMenuList"
+          "menuJenisFilter"
         );
 
 
@@ -1530,23 +1572,40 @@
         [
           ...new Set(
             semuaMenu
+              .filter(
+                function(menu) {
+
+                  return (
+                    kategoriAktif === "SEMUA" ||
+                    String(
+                      menu.kategori || ""
+                    ).trim().toUpperCase() ===
+                    kategoriAktif
+                  );
+
+                }
+              )
               .map(
                 function(menu) {
+
                   return String(
                     menu.jenis || ""
                   ).trim();
+
                 }
               )
               .filter(
                 function(jenis) {
+
                   return jenis !== "";
+
                 }
               )
           )
         ];
 
 
-      jenisList.innerHTML = "";
+      jenisFilter.innerHTML = "";
 
 
       const semuaButton =
@@ -1554,8 +1613,9 @@
           "button"
         );
 
+
       semuaButton.className =
-        "jenis-menu-button";
+        "menu-jenis-filter-button";
 
 
       if (
@@ -1570,7 +1630,7 @@
 
 
       semuaButton.textContent =
-        "Semua Menu";
+        "Semua Jenis";
 
 
       semuaButton.onclick =
@@ -1583,7 +1643,7 @@
         };
 
 
-      jenisList.appendChild(
+      jenisFilter.appendChild(
         semuaButton
       );
 
@@ -1596,8 +1656,9 @@
               "button"
             );
 
+
           button.className =
-            "jenis-menu-button";
+            "menu-jenis-filter-button";
 
 
           if (
@@ -1625,7 +1686,7 @@
             };
 
 
-          jenisList.appendChild(
+          jenisFilter.appendChild(
             button
           );
 
@@ -1694,8 +1755,7 @@
         jenis;
 
 
-      tutupJenisMenu();
-
+      buatDaftarJenis();
 
       renderMenu();
 
@@ -1710,6 +1770,10 @@
 
       kategoriAktif =
         kategori;
+
+
+      jenisAktif =
+        "SEMUA";
 
 
       const buttons =
@@ -1740,6 +1804,8 @@
         }
       );
 
+
+      buatDaftarJenis();
 
       renderMenu();
 
@@ -1783,19 +1849,20 @@
         semuaMenu.filter(
           function(menu) {
 
-            const cocokJenis =
-              jenisAktif === "SEMUA" ||
-              String(
-                menu.jenis || ""
-              ).trim() === jenisAktif;
-
-
             const cocokKategori =
               kategoriAktif === "SEMUA" ||
               String(
                 menu.kategori || ""
               ).trim().toUpperCase() ===
               kategoriAktif;
+
+
+            const cocokJenis =
+              jenisAktif === "SEMUA" ||
+              String(
+                menu.jenis || ""
+              ).trim() ===
+              jenisAktif;
 
 
             const cocokSearch =
@@ -1808,8 +1875,8 @@
 
 
             return (
-              cocokJenis &&
               cocokKategori &&
+              cocokJenis &&
               cocokSearch
             );
 
@@ -1874,6 +1941,7 @@
               "section"
             );
 
+
           kategoriSection.className =
             "menu-category";
 
@@ -1890,6 +1958,7 @@
               "div"
             );
 
+
           menuGrid.className =
             "menu-grid";
 
@@ -1902,6 +1971,7 @@
                   document.createElement(
                     "div"
                   );
+
 
                 card.className =
                   "menu-card";
