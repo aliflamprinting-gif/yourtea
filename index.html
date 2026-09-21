@@ -1567,6 +1567,11 @@
           "menuJenisFilter"
         );
 
+      const jenisPopup =
+        document.getElementById(
+          "jenisMenuList"
+        );
+
 
       const jenisUnik =
         [
@@ -1705,6 +1710,105 @@
 
         }
       );
+
+
+      if (
+        jenisPopup
+      ) {
+
+        jenisPopup.innerHTML = "";
+
+
+        const semuaPopupButton =
+          document.createElement(
+            "button"
+          );
+
+
+        semuaPopupButton.className =
+          "jenis-menu-button";
+
+
+        if (
+          jenisAktif === "SEMUA"
+        ) {
+
+          semuaPopupButton.classList.add(
+            "active"
+          );
+
+        }
+
+
+        semuaPopupButton.textContent =
+          "Semua Jenis";
+
+
+        semuaPopupButton.onclick =
+          function() {
+
+            pilihJenis(
+              "SEMUA"
+            );
+
+            tutupJenisMenu();
+
+          };
+
+
+        jenisPopup.appendChild(
+          semuaPopupButton
+        );
+
+
+        jenisUnik.forEach(
+          function(jenis) {
+
+            const popupButton =
+              document.createElement(
+                "button"
+              );
+
+
+            popupButton.className =
+              "jenis-menu-button";
+
+
+            if (
+              jenisAktif === jenis
+            ) {
+
+              popupButton.classList.add(
+                "active"
+              );
+
+            }
+
+
+            popupButton.textContent =
+              jenis;
+
+
+            popupButton.onclick =
+              function() {
+
+                pilihJenis(
+                  jenis
+                );
+
+                tutupJenisMenu();
+
+              };
+
+
+            jenisPopup.appendChild(
+              popupButton
+            );
+
+          }
+        );
+
+      }
 
     }
 
