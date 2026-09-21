@@ -347,6 +347,291 @@
       cursor: pointer;
     }
 
+    /* HALAMAN BERANDA */
+
+    .home-page {
+      display: none;
+      width: 100%;
+      max-width: 520px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 0 16px 95px;
+      background: #ffffff;
+      color: #14251d;
+    }
+
+    .home-page.show {
+      display: block;
+    }
+
+    .home-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      width: calc(100% + 32px);
+      margin-left: -16px;
+      padding: 12px 16px 10px;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    .home-topbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .home-logo {
+      width: 105px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .home-hero {
+      padding: 34px 4px 24px;
+      text-align: left;
+    }
+
+    .home-kicker {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #eaf5df;
+      color: #159447;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+    }
+
+    .home-title {
+      font-size: 32px;
+      line-height: 1.02;
+      font-weight: 900;
+      color: #0d4a37;
+      margin-bottom: 12px;
+      letter-spacing: -0.7px;
+    }
+
+    .home-title span {
+      color: #159447;
+    }
+
+    .home-subtitle {
+      font-size: 17px;
+      line-height: 1.35;
+      font-weight: 700;
+      color: #1f2d25;
+      margin-bottom: 10px;
+    }
+
+    .home-description {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #66736b;
+      margin-bottom: 16px;
+    }
+
+    .home-outlet-image {
+      width: 100%;
+      height: 210px;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+
+    .home-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: none;
+      border-radius: 999px;
+      padding: 13px 19px;
+      background: #f5c82f;
+      color: #12352a;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 7px 16px rgba(245, 200, 47, 0.25);
+    }
+
+    .home-section {
+      margin-top: 10px;
+      padding: 24px 0;
+    }
+
+    .home-section-title {
+      font-size: 23px;
+      line-height: 1.15;
+      font-weight: 900;
+      color: #132d24;
+      text-align: center;
+      margin-bottom: 7px;
+    }
+
+    .home-section-subtitle {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #728078;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .home-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .home-feature-card {
+      min-height: 145px;
+      padding: 16px 13px;
+      border-radius: 18px;
+      background: #eef6ec;
+      text-align: center;
+    }
+
+    .home-feature-icon {
+      width: 46px;
+      height: 46px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0d4a37;
+      color: white;
+      font-size: 22px;
+    }
+
+    .home-feature-title {
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 900;
+      color: #132d24;
+      margin-bottom: 7px;
+    }
+
+    .home-feature-text {
+      font-size: 11px;
+      line-height: 1.45;
+      color: #66736b;
+    }
+
+    .home-flow {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 4px 0 8px;
+      scrollbar-width: none;
+    }
+
+    .home-flow::-webkit-scrollbar {
+      display: none;
+    }
+
+    .home-flow-item {
+      flex: 0 0 72px;
+      text-align: center;
+    }
+
+    .home-flow-icon {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 7px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eaf5df;
+      font-size: 25px;
+    }
+
+    .home-flow-label {
+      font-size: 10px;
+      line-height: 1.25;
+      font-weight: 800;
+      color: #183127;
+    }
+
+    .home-flow-arrow {
+      flex: 0 0 auto;
+      padding-top: 18px;
+      color: #0d4a37;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .home-goal {
+      margin-top: 10px;
+      padding: 24px 18px;
+      border-radius: 24px;
+      background: linear-gradient(
+        145deg,
+        #064b38 0%,
+        #0d6a4d 100%
+      );
+      color: white;
+    }
+
+    .home-goal-label {
+      font-size: 12px;
+      font-weight: 900;
+      color: #f5c82f;
+      margin-bottom: 10px;
+    }
+
+    .home-goal-title {
+      font-size: 24px;
+      line-height: 1.12;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .home-goal-title span {
+      color: #f5c82f;
+    }
+
+    .home-goal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .home-goal-item {
+      text-align: center;
+    }
+
+    .home-goal-icon {
+      font-size: 25px;
+      margin-bottom: 5px;
+    }
+
+    .home-goal-text {
+      font-size: 10px;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+
+    .home-bottom-cta {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 13px;
+      background: #f5c82f;
+      color: #12352a;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+
     /* HALAMAN MENU */
 
     .menu-page {
@@ -1074,6 +1359,404 @@
       </div>
 
     </section>
+
+
+        <!-- HALAMAN BERANDA -->
+
+    <section
+      class="home-page"
+      id="homePage"
+    >
+
+      <div class="home-topbar">
+
+        <div class="home-topbar-row">
+
+          <img
+            src="yourtea-logo.png.png"
+            alt="YourTea"
+            class="home-logo"
+          >
+
+        </div>
+
+      </div>
+
+
+      <section class="home-hero">
+
+        <div class="home-kicker">
+          YOURTEA FRANCHISE
+        </div>
+
+
+        <h1 class="home-title">
+          FRANCHISE<br>
+          <span>AUTOPILOT 2026</span>
+        </h1>
+
+
+        <div class="home-subtitle">
+          Lebih dari Minuman,<br>
+          Ini Sistem untuk Bertumbuh.
+        </div>
+
+
+        <p class="home-description">
+          Yourtea menghadirkan konsep franchise modern
+          yang didukung oleh sistem, teknologi, dan
+          standardisasi, sehingga bisnis dapat berjalan
+          lebih efisien, konsisten, dan siap berkembang
+          ke banyak cabang.
+        </p>
+
+
+        <img
+          src="GAMBAR%204.webp"
+          alt="Outlet YourTea"
+          class="home-outlet-image"
+        >
+
+
+        <button
+          class="home-cta"
+          onclick="pilihToko()"
+        >
+          LIHAT MENU
+          <span>→</span>
+        </button>
+
+      </section>
+
+
+      <section class="home-section">
+
+        <h2 class="home-section-title">
+          Satu Ekosistem, Banyak Kemudahan
+        </h2>
+
+        <p class="home-section-subtitle">
+          Dari pelanggan hingga management, semua terhubung
+          dalam satu sistem.
+        </p>
+
+
+        <div class="home-feature-grid">
+
+          <div class="home-feature-card">
+
+            <div class="home-feature-icon">
+              ⚙️
+            </div>
+
+            <div class="home-feature-title">
+              Sistem Terintegrasi
+            </div>
+
+            <div class="home-feature-text">
+              Operasional lebih mudah dan efisien.
+            </div>
+
+          </div>
+
+
+          <div class="home-feature-card">
+
+            <div class="home-feature-icon">
+              ▥
+            </div>
+
+            <div class="home-feature-title">
+              Data Real-time
+            </div>
+
+            <div class="home-feature-text">
+              Pantau performa semua cabang dalam satu dashboard.
+            </div>
+
+          </div>
+
+
+          <div class="home-feature-card">
+
+            <div class="home-feature-icon">
+              👥
+            </div>
+
+            <div class="home-feature-title">
+              Standardisasi
+            </div>
+
+            <div class="home-feature-text">
+              Kualitas produk dan pelayanan tetap konsisten.
+            </div>
+
+          </div>
+
+
+          <div class="home-feature-card">
+
+            <div class="home-feature-icon">
+              🚀
+            </div>
+
+            <div class="home-feature-title">
+              Siap Berkembang
+            </div>
+
+            <div class="home-feature-text">
+              Sistem dirancang untuk mendukung ekspansi.
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="home-section">
+
+        <h2 class="home-section-title">
+          Satu Alur, Satu Ekosistem
+        </h2>
+
+        <p class="home-section-subtitle">
+          Semua proses saling terhubung dalam satu sistem.
+        </p>
+
+
+        <div class="home-flow">
+
+          <div class="home-flow-item">
+
+            <div class="home-flow-icon">
+              📱
+            </div>
+
+            <div class="home-flow-label">
+              Pelanggan<br>
+              Order
+            </div>
+
+          </div>
+
+
+          <div class="home-flow-arrow">
+            →
+          </div>
+
+
+          <div class="home-flow-item">
+
+            <div class="home-flow-icon">
+              🧾
+            </div>
+
+            <div class="home-flow-label">
+              Transaksi<br>
+              (POS)
+            </div>
+
+          </div>
+
+
+          <div class="home-flow-arrow">
+            →
+          </div>
+
+
+          <div class="home-flow-item">
+
+            <div class="home-flow-icon">
+              🥤
+            </div>
+
+            <div class="home-flow-label">
+              Produksi
+            </div>
+
+          </div>
+
+
+          <div class="home-flow-arrow">
+            →
+          </div>
+
+
+          <div class="home-flow-item">
+
+            <div class="home-flow-icon">
+              📦
+            </div>
+
+            <div class="home-flow-label">
+              Stok<br>
+              Inventory
+            </div>
+
+          </div>
+
+
+          <div class="home-flow-arrow">
+            →
+          </div>
+
+
+          <div class="home-flow-item">
+
+            <div class="home-flow-icon">
+              📊
+            </div>
+
+            <div class="home-flow-label">
+              Data<br>
+              Cabang
+            </div>
+
+          </div>
+
+
+          <div class="home-flow-arrow">
+            →
+          </div>
+
+
+          <div class="home-flow-item">
+
+            <div class="home-flow-icon">
+              ☁️
+            </div>
+
+            <div class="home-flow-label">
+              Monitoring<br>
+              Pusat
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="home-goal">
+
+        <div class="home-goal-label">
+          🌿 TUJUAN KAMI
+        </div>
+
+
+        <div class="home-goal-title">
+          Membangun lebih banyak kesempatan,
+          melalui bisnis yang
+          <span>berkelanjutan dan terukur.</span>
+        </div>
+
+
+        <div class="home-goal-grid">
+
+          <div class="home-goal-item">
+
+            <div class="home-goal-icon">
+              📈
+            </div>
+
+            <div class="home-goal-text">
+              Bertumbuh<br>
+              Bersama
+            </div>
+
+          </div>
+
+
+          <div class="home-goal-item">
+
+            <div class="home-goal-icon">
+              👥
+            </div>
+
+            <div class="home-goal-text">
+              Memberi<br>
+              Dampak Positif
+            </div>
+
+          </div>
+
+
+          <div class="home-goal-item">
+
+            <div class="home-goal-icon">
+              🌱
+            </div>
+
+            <div class="home-goal-text">
+              Lebih Banyak<br>
+              Cerita Sukses
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="home-bottom-cta"
+          onclick="pilihToko()"
+        >
+          LET'S GROW TOGETHER →
+        </button>
+
+      </section>
+
+
+      <nav class="menu-bottom-nav">
+
+        <button
+          class="menu-nav-button active"
+          onclick="bukaBeranda()"
+        >
+
+          <span class="menu-nav-icon">
+            🏠
+          </span>
+
+          Beranda
+
+        </button>
+
+
+        <button
+          class="menu-nav-button"
+          onclick="pilihToko()"
+        >
+
+          <span class="menu-nav-icon">
+            ▦
+          </span>
+
+          Menu
+
+        </button>
+
+
+        <button
+          class="menu-nav-button"
+          onclick="bukaKeranjang()"
+        >
+
+          <span class="menu-nav-icon">
+            🛒
+          </span>
+
+          Keranjang
+
+        </button>
+
+      </nav>
+
+    </section>
+
 
         <!-- HALAMAN MENU -->
     <section
