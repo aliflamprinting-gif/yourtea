@@ -251,6 +251,8 @@
     .outlet-box {
       width: 100%;
       max-width: 380px;
+      max-height: 90vh;
+      overflow-y: auto;
       background: #fffef1;
       border-radius: 24px;
       padding: 28px 22px;
@@ -277,6 +279,10 @@
       line-height: 1.5;
       color: #687653;
       margin-bottom: 20px;
+    }
+
+    .outlet-list {
+      width: 100%;
     }
 
     .outlet-card {
@@ -312,6 +318,21 @@
       font-size: 13px;
       font-weight: 800;
       cursor: pointer;
+    }
+
+    .outlet-loading {
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 13px;
+      color: #687653;
+    }
+
+    .outlet-error {
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #8b4d3f;
     }
 
     .outlet-back {
@@ -517,22 +538,14 @@
           Pilih outlet tempat kamu sedang berada.
         </div>
 
-        <div class="outlet-card">
+        <div
+          class="outlet-list"
+          id="outletList"
+        >
 
-          <div class="outlet-name">
-            YourTea Cikal
+          <div class="outlet-loading">
+            Memuat daftar outlet...
           </div>
-
-          <div class="outlet-address">
-            Outlet YourTea
-          </div>
-
-          <button
-            class="outlet-select"
-            onclick="pilihOutlet()"
-          >
-            PILIH OUTLET
-          </button>
 
         </div>
 
@@ -585,6 +598,12 @@
 
   <script>
 
+    /* URL API YOURTEA */
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbw_-3sp8C4ujP55m9Ogg0XAgh9lkI_paivXhTn9AZqkisL-w45HrP6SQm7eV7117Gmj4A/exec";
+
+
+    /* PILIH SAYA SEDANG DI TOKO */
     function pilihToko() {
 
       const popup =
@@ -592,9 +611,139 @@
 
       popup.classList.add("show");
 
+      loadCabang();
+
     }
 
 
+    /* AMBIL DATA CABANG DARI API */
+    async function loadCabang() {
+
+      const outletList =
+        document.getElementById("outletList");
+
+      outletList.innerHTML = `
+        <div class="outlet-loading">
+          Memuat daftar outlet...
+        </div>
+      `;
+
+      try {
+
+        const response =
+          await fetch(
+            API_URL + "?action=getCabang"
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            "Gagal menghubungi API."
+          );
+        }
+
+        const result =
+          await response.json();
+
+        if (
+          result.status !== "success" ||
+          !Array.isArray(result.data)
+        ) {
+          throw new Error(
+            "Data outlet tidak valid."
+          );
+        }
+
+        if (result.data.length === 0) {
+
+          outletList.innerHTML = `
+            <div class="outlet-error">
+              Tidak ada outlet yang sedang aktif.
+            </div>
+          `;
+
+          return;
+        }
+
+        outletList.innerHTML = "";
+
+        result.data.forEach(
+          function(cabang) {
+
+            const card =
+              document.createElement("div");
+
+            card.className =
+              "outlet-card";
+
+            card.innerHTML = `
+              <div class="outlet-name">
+                ${escapeHTML(cabang.nama_cabang)}
+              </div>
+
+              <div class="outlet-address">
+                ${
+                  cabang.alamat
+                    ? escapeHTML(cabang.alamat)
+                    : "Outlet YourTea"
+                }
+              </div>
+
+              <button
+                class="outlet-select"
+                onclick="pilihOutlet('${escapeJS(cabang.id_cabang)}', '${escapeJS(cabang.nama_cabang)}')"
+              >
+                PILIH OUTLET
+              </button>
+            `;
+
+            outletList.appendChild(card);
+
+          }
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        outletList.innerHTML = `
+          <div class="outlet-error">
+            Gagal memuat daftar outlet.
+            <br>
+            Silakan coba lagi.
+          </div>
+        `;
+
+      }
+
+    }
+
+
+    /* SIMPAN OUTLET YANG DIPILIH */
+    function pilihOutlet(
+      idCabang,
+      namaCabang
+    ) {
+
+      localStorage.setItem(
+        "YT_ID_CABANG",
+        idCabang
+      );
+
+      localStorage.setItem(
+        "YT_NAMA_CABANG",
+        namaCabang
+      );
+
+      alert(
+        "Outlet " +
+        namaCabang +
+        " berhasil dipilih. Halaman MENU akan dibuat di tahap berikutnya."
+      );
+
+    }
+
+
+    /* TUTUP POPUP OUTLET */
     function tutupOutlet() {
 
       const popup =
@@ -605,15 +754,7 @@
     }
 
 
-    function pilihOutlet() {
-
-      alert(
-        "Outlet YourTea berhasil dipilih. Halaman MENU akan dibuat di tahap berikutnya."
-      );
-
-    }
-
-
+    /* PESAN ONLINE */
     function pesanOnline() {
 
       const popup =
@@ -624,12 +765,36 @@
     }
 
 
+    /* TUTUP PESAN ONLINE */
     function tutupPesanOnline() {
 
       const popup =
         document.getElementById("onlineMessage");
 
       popup.classList.remove("show");
+
+    }
+
+
+    /* AMANKAN TEKS HTML */
+    function escapeHTML(text) {
+
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* AMANKAN TEKS UNTUK JAVASCRIPT */
+    function escapeJS(text) {
+
+      return String(text)
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'");
 
     }
 
