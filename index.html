@@ -1892,7 +1892,7 @@
 
         <button
           class="menu-nav-button"
-          onclick="kembaliKeLanding()"
+          onclick="bukaBeranda()"
         >
 
           <span class="menu-nav-icon">
@@ -3020,6 +3020,44 @@
     }
 
     
+    /* BUKA BERANDA */
+
+    function bukaBeranda() {
+
+      document.querySelector(
+        ".content"
+      ).style.display =
+        "none";
+
+
+      document.querySelector(
+        ".visual-footer"
+      ).style.display =
+        "none";
+
+
+      document.getElementById(
+        "menuPage"
+      ).classList.remove(
+        "show"
+      );
+
+
+      document.getElementById(
+        "homePage"
+      ).classList.add(
+        "show"
+      );
+
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+    }
+
+
     /* KEMBALI KE HALAMAN AWAL */
 
     function kembaliKeLanding() {
