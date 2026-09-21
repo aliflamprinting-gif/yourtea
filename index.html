@@ -250,12 +250,12 @@
 
     .outlet-box {
       width: 100%;
-      max-width: 380px;
-      max-height: 90vh;
+      max-width: 420px;
+      max-height: 65vh;
       overflow-y: auto;
       background: #fffef1;
-      border-radius: 24px;
-      padding: 28px 22px;
+      border-radius: 20px;
+      padding: 20px 16px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
     }
 
@@ -281,8 +281,62 @@
       margin-bottom: 20px;
     }
 
+    .outlet-search {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #dcebb7;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: white;
+      color: #40551d;
+      font-size: 13px;
+      outline: none;
+      margin-bottom: 14px;
+    }
+
+    .outlet-search:focus {
+      border-color: #76b84b;
+    }
+
+    .outlet-search::placeholder {
+      color: #9aa58a;
+    }
+
     .outlet-list {
       width: 100%;
+    }
+
+    .menu-outlet-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 9px;
+    }
+
+    .menu-outlet {
+      flex: 1;
+      min-width: 0;
+      margin-top: 0;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 800;
+      color: #4f9b3a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .menu-change-outlet {
+      flex-shrink: 0;
+      border: none;
+      background: transparent;
+      color: #76a85b;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 4px 0;
     }
 
     .outlet-card {
@@ -708,13 +762,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .menu-outlet {
-      margin-top: 9px;
-      text-align: center;
-      font-size: 11px;
-      color: #6c7964;
     }
 
     .menu-search {
@@ -1794,11 +1841,23 @@
         </div>
 
 
-        <div
-          class="menu-outlet"
-          id="menuOutletName"
-        >
-          Memuat outlet...
+        <div class="menu-outlet-row">
+
+          <div
+            class="menu-outlet"
+            id="menuOutletName"
+          >
+            Memuat outlet...
+          </div>
+
+          <button
+            class="menu-change-outlet"
+            type="button"
+            onclick="pilihToko()"
+          >
+            GANTI LOKASI
+          </button>
+
         </div>
 
 
@@ -2035,6 +2094,14 @@
           Pilih outlet tempat kamu sedang berada.
         </div>
 
+        <input
+          type="text"
+          class="outlet-search"
+          id="outletSearch"
+          placeholder="🔍 Cari nama outlet..."
+          oninput="filterOutlet()"
+        >
+
         <div
           class="outlet-list"
           id="outletList"
@@ -2108,6 +2175,13 @@
 
       popup.classList.add("show");
 
+      const search =
+        document.getElementById("outletSearch");
+
+      if (search) {
+        search.value = "";
+      }
+
       loadCabang();
 
     }
@@ -2172,6 +2246,13 @@
             card.className =
               "outlet-card";
 
+            card.dataset.search =
+              (
+                String(cabang.nama_cabang || "") +
+                " " +
+                String(cabang.alamat || "")
+              ).toLowerCase();
+
             card.innerHTML = `
               <div class="outlet-name">
                 ${escapeHTML(cabang.nama_cabang)}
@@ -2214,6 +2295,88 @@
 
     }
 
+        /* FILTER PENCARIAN OUTLET */
+
+    function filterOutlet() {
+
+      const search =
+        document.getElementById("outletSearch");
+
+      const outletList =
+        document.getElementById("outletList");
+
+      if (!search || !outletList) {
+        return;
+      }
+
+      const keyword =
+        search.value
+          .trim()
+          .toLowerCase();
+
+      const cards =
+        outletList.querySelectorAll(
+          ".outlet-card"
+        );
+
+      let jumlahTampil = 0;
+
+      cards.forEach(
+        function(card) {
+
+          const text =
+            card.dataset.search || "";
+
+          const cocok =
+            text.includes(keyword);
+
+          card.style.display =
+            cocok ? "" : "none";
+
+          if (cocok) {
+            jumlahTampil++;
+          }
+
+        }
+      );
+
+      let noResult =
+        document.getElementById(
+          "outletNoResult"
+        );
+
+      if (
+        keyword &&
+        jumlahTampil === 0
+      ) {
+
+        if (!noResult) {
+
+          noResult =
+            document.createElement("div");
+
+          noResult.id =
+            "outletNoResult";
+
+          noResult.className =
+            "outlet-loading";
+
+          outletList.appendChild(
+            noResult
+          );
+
+        }
+
+        noResult.textContent =
+          "Outlet tidak ditemukan.";
+
+      } else if (noResult) {
+
+        noResult.remove();
+
+      }
+
+    }
 
     /* SIMPAN OUTLET YANG DIPILIH */
     function pilihOutlet(
@@ -2235,6 +2398,26 @@
         document.getElementById("outletMessage");
 
       popup.classList.remove("show");
+
+      const menuPage =
+        document.getElementById("menuPage");
+
+      const menuOutletName =
+        document.getElementById("menuOutletName");
+
+      if (
+        menuPage &&
+        menuPage.classList.contains("show")
+      ) {
+
+        if (menuOutletName) {
+          menuOutletName.textContent =
+            namaCabang;
+        }
+
+        return;
+
+      }
 
       bukaMenu();
 
@@ -2261,13 +2444,6 @@
       document.getElementById(
         "homePage"
       ).classList.remove(
-        "show"
-      );
-
-
-      document.getElementById(
-        "menuPage"
-      ).classList.add(
         "show"
       );
 
