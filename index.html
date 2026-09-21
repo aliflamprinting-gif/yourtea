@@ -1,1 +1,561 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>YourTea — Menu Digital</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(
+        180deg,
+        #fff36a 0%,
+        #d9ef5b 45%,
+        #8bcf55 100%
+      );
+      color: #263b16;
+      overflow-x: hidden;
+    }
+
+    /* =========================
+       HALAMAN UTAMA
+    ========================= */
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* =========================
+       AREA KONTEN
+    ========================= */
+
+    .content {
+      position: relative;
+      z-index: 2;
+
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+
+      min-height: 68vh;
+
+      padding: 45px 24px 30px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* =========================
+       LOGO
+    ========================= */
+
+    .logo {
+      width: 170px;
+      max-width: 70%;
+      height: auto;
+      object-fit: contain;
+
+      margin-bottom: 30px;
+
+      filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.12));
+    }
+
+    /* =========================
+       JUDUL
+    ========================= */
+
+    .title {
+      font-size: 29px;
+      line-height: 1.15;
+      font-weight: 800;
+
+      color: #3d541b;
+
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      line-height: 1.5;
+
+      color: #526d2b;
+
+      max-width: 330px;
+
+      margin-bottom: 28px;
+    }
+
+    /* =========================
+       PILIHAN
+    ========================= */
+
+    .choices {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .choice {
+      width: 100%;
+
+      border: none;
+      border-radius: 18px;
+
+      padding: 17px 18px;
+
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      background: rgba(255, 255, 255, 0.92);
+
+      color: #304619;
+
+      box-shadow:
+        0 8px 20px rgba(49, 76, 20, 0.12);
+
+      cursor: pointer;
+
+      text-align: left;
+
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .choice:hover {
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 12px 25px rgba(49, 76, 20, 0.18);
+    }
+
+    .choice:active {
+      transform: scale(0.98);
+    }
+
+    .choice-icon {
+      width: 48px;
+      height: 48px;
+
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 15px;
+
+      font-size: 25px;
+
+      background: #eff8c9;
+    }
+
+    .choice-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .choice-title {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .choice-description {
+      font-size: 12px;
+      color: #708052;
+      line-height: 1.35;
+    }
+
+    /* =========================
+       FOOTER GAMBAR
+    ========================= */
+
+    .visual-footer {
+      position: relative;
+      z-index: 1;
+
+      width: 100%;
+
+      margin-top: auto;
+
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+
+      overflow: hidden;
+    }
+
+    .footer-image {
+      display: block;
+
+      width: 100%;
+      max-width: 1200px;
+
+      height: auto;
+
+      object-fit: contain;
+
+      object-position: bottom center;
+
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* =========================
+       PESAN ONLINE
+    ========================= */
+
+    .online-message {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 99;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 24px;
+
+      background: rgba(31, 45, 17, 0.45);
+
+      backdrop-filter: blur(5px);
+    }
+
+    .online-message.show {
+      display: flex;
+    }
+
+    .message-box {
+      width: 100%;
+      max-width: 360px;
+
+      background: #fffef1;
+
+      border-radius: 24px;
+
+      padding: 28px 22px;
+
+      text-align: center;
+
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .message-icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .message-title {
+      font-size: 20px;
+      font-weight: 800;
+
+      color: #40551d;
+
+      margin-bottom: 10px;
+    }
+
+    .message-text {
+      font-size: 14px;
+      line-height: 1.55;
+
+      color: #687653;
+
+      margin-bottom: 20px;
+    }
+
+    .close-message {
+      width: 100%;
+
+      border: none;
+      border-radius: 14px;
+
+      padding: 13px;
+
+      background: #76b84b;
+
+      color: white;
+
+      font-size: 14px;
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    /* =========================
+       RESPONSIVE HP
+    ========================= */
+
+    @media (max-width: 480px) {
+
+      .content {
+        min-height: 66vh;
+
+        padding:
+          34px
+          20px
+          20px;
+      }
+
+      .logo {
+        width: 145px;
+        margin-bottom: 25px;
+      }
+
+      .title {
+        font-size: 25px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+        margin-bottom: 24px;
+      }
+
+      .choice {
+        border-radius: 16px;
+        padding: 15px;
+      }
+
+      .choice-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+      }
+
+      .visual-footer {
+        margin-top: -5px;
+      }
+
+      .footer-image {
+        width: 125%;
+        max-width: none;
+
+        transform: translateX(0);
+      }
+    }
+
+    /* =========================
+       HP KECIL
+    ========================= */
+
+    @media (max-height: 700px) and (max-width: 480px) {
+
+      .content {
+        padding-top: 25px;
+      }
+
+      .logo {
+        width: 120px;
+        margin-bottom: 18px;
+      }
+
+      .title {
+        font-size: 22px;
+      }
+
+      .subtitle {
+        margin-bottom: 18px;
+      }
+
+      .choice {
+        padding: 12px;
+      }
+
+      .choice-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <!-- =========================
+         KONTEN UTAMA
+    ========================== -->
+
+    <section class="content">
+
+      <img
+        src="yourtea-logo.png.png"
+        alt="YourTea"
+        class="logo"
+      >
+
+      <h1 class="title">
+        👋 Sedang dimana kamu?
+      </h1>
+
+      <p class="subtitle">
+        Pilih cara kamu menggunakan menu digital YourTea
+      </p>
+
+      <div class="choices">
+
+        <!-- TOKO -->
+        <button
+          class="choice"
+          onclick="pilihToko()"
+        >
+          <div class="choice-icon">
+            📍
+          </div>
+
+          <div class="choice-text">
+            <div class="choice-title">
+              SAYA SEDANG DI TOKO
+            </div>
+
+            <div class="choice-description">
+              Klik di sini jika sedang berada di toko YourTea
+            </div>
+          </div>
+        </button>
+
+
+        <!-- ONLINE -->
+        <button
+          class="choice"
+          onclick="pesanOnline()"
+        >
+          <div class="choice-icon">
+            🌐
+          </div>
+
+          <div class="choice-text">
+            <div class="choice-title">
+              PESAN ONLINE
+            </div>
+
+            <div class="choice-description">
+              Klik di sini untuk pesan online
+            </div>
+          </div>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER VISUAL
+    ========================== -->
+
+    <footer class="visual-footer">
+
+      <img
+        src="FOTO%201.png"
+        alt=""
+        class="footer-image"
+      >
+
+    </footer>
+
+
+    <!-- =========================
+         POPUP ONLINE
+    ========================== -->
+
+    <div
+      class="online-message"
+      id="onlineMessage"
+    >
+
+      <div class="message-box">
+
+        <div class="message-icon">
+          🚧
+        </div>
+
+        <div class="message-title">
+          FITUR BELUM TERSEDIA
+        </div>
+
+        <div class="message-text">
+          Pesan online sedang dalam tahap pengembangan.
+          Silakan gunakan fitur Pesan di Toko untuk saat ini.
+        </div>
+
+        <button
+          class="close-message"
+          onclick="tutupPesanOnline()"
+        >
+          OKE
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <script>
+
+    function pilihToko() {
+
+      /*
+       * SEMENTARA
+       * Nanti tombol ini diarahkan ke
+       * halaman pemilihan outlet.
+       */
+
+      alert(
+        "Pilih Outlet YourTea akan dibuat di tahap berikutnya."
+      );
+    }
+
+
+    function pesanOnline() {
+
+      const popup =
+        document.getElementById("onlineMessage");
+
+      popup.classList.add("show");
+    }
+
+
+    function tutupPesanOnline() {
+
+      const popup =
+        document.getElementById("onlineMessage");
+
+      popup.classList.remove("show");
+    }
+
+  </script>
+
+</body>
+</html>
