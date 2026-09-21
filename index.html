@@ -983,7 +983,41 @@
         <div
           class="menu-filter"
           id="menuFilter"
-        ></div>
+        >
+
+          <button
+            class="menu-filter-button active"
+            data-kategori="SEMUA"
+            onclick="pilihKategori('SEMUA')"
+          >
+            Semua
+          </button>
+
+          <button
+            class="menu-filter-button"
+            data-kategori="MINUMAN"
+            onclick="pilihKategori('MINUMAN')"
+          >
+            Minuman
+          </button>
+
+          <button
+            class="menu-filter-button"
+            data-kategori="MAKANAN"
+            onclick="pilihKategori('MAKANAN')"
+          >
+            Makanan
+          </button>
+
+          <button
+            class="menu-filter-button"
+            data-kategori="PAKET NGEMIL"
+            onclick="pilihKategori('PAKET NGEMIL')"
+          >
+            Paket Ngemil
+          </button>
+
+        </div>
 
       </div>
 
@@ -1464,6 +1498,8 @@
 
     let jenisAktif = "SEMUA";
 
+    let kategoriAktif = "SEMUA";
+
 
     /* TAMPILKAN MENU */
 
@@ -1666,6 +1702,50 @@
     }
 
 
+    /* PILIH KATEGORI */
+
+    function pilihKategori(
+      kategori
+    ) {
+
+      kategoriAktif =
+        kategori;
+
+
+      const buttons =
+        document.querySelectorAll(
+          ".menu-filter-button"
+        );
+
+
+      buttons.forEach(
+        function(button) {
+
+          button.classList.remove(
+            "active"
+          );
+
+
+          if (
+            button.dataset.kategori ===
+            kategoriAktif
+          ) {
+
+            button.classList.add(
+              "active"
+            );
+
+          }
+
+        }
+      );
+
+
+      renderMenu();
+
+    }
+
+
     /* FILTER SEARCH */
 
     function filterMenu() {
@@ -1710,6 +1790,14 @@
               ).trim() === jenisAktif;
 
 
+            const cocokKategori =
+              kategoriAktif === "SEMUA" ||
+              String(
+                menu.kategori || ""
+              ).trim().toUpperCase() ===
+              kategoriAktif;
+
+
             const cocokSearch =
               !keyword ||
               String(
@@ -1721,6 +1809,7 @@
 
             return (
               cocokJenis &&
+              cocokKategori &&
               cocokSearch
             );
 
@@ -1904,7 +1993,6 @@
       );
 
     }
-
 
     /* KEMBALI KE LANDING */
 
