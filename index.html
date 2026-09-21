@@ -1700,12 +1700,12 @@
         </div>
 
 
-        <button
-          class="home-bottom-cta"
-          onclick="pilihToko()"
-        >
-          LET'S GROW TOGETHER →
-        </button>
+      <button
+        class="home-bottom-cta"
+        type="button"
+      >
+        LET'S GROW TOGETHER →
+      </button>
 
       </section>
 
@@ -1728,7 +1728,7 @@
 
         <button
           class="menu-nav-button"
-          onclick="pilihToko()"
+          onclick="bukaMenu()"
         >
 
           <span class="menu-nav-icon">
@@ -2270,6 +2270,13 @@
       document.getElementById(
         "homePage"
       ).classList.remove(
+        "show"
+      );
+
+
+      document.getElementById(
+        "menuPage"
+      ).classList.add(
         "show"
       );
 
