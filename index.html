@@ -255,8 +255,17 @@
       overflow-y: auto;
       background: #fffef1;
       border-radius: 20px;
-      padding: 20px 16px;
+      padding: 0 16px 20px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .outlet-header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #fffef1;
+      padding: 20px 0 12px;
+      position: relative;
     }
 
     .outlet-icon {
@@ -390,15 +399,16 @@
     }
 
     .outlet-back {
-      width: 100%;
-      border: 1px solid #dcebb7;
-      border-radius: 12px;
-      padding: 12px;
+      position: absolute;
+      top: 18px;
+      right: 0;
+      border: none;
       background: transparent;
-      color: #607342;
-      font-size: 13px;
-      font-weight: 700;
+      color: #76a85b;
+      font-size: 12px;
+      font-weight: 800;
       cursor: pointer;
+      padding: 6px 0;
     }
 
     /* HALAMAN BERANDA */
@@ -1185,6 +1195,65 @@
       font-size: 17px;
       font-weight: 900;
       color: #e87520;
+    }
+
+        .detail-menu-topping {
+      margin-top: 12px;
+    }
+
+    .detail-menu-topping-title {
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #263522;
+    }
+
+    .detail-menu-topping-list {
+      width: 100%;
+    }
+
+    .detail-menu-topping-item {
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid #edf1e7;
+      cursor: pointer;
+    }
+
+    .detail-menu-topping-text {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .detail-menu-topping-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #263522;
+    }
+
+    .detail-menu-topping-price {
+      flex-shrink: 0;
+      font-size: 12px;
+      font-weight: 800;
+      color: #f36c21;
+    }
+
+    .detail-menu-topping-item input[type="checkbox"] {
+      order: 2;
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: #169b4a;
+      cursor: pointer;
     }
 
     .detail-menu-rule {
@@ -2082,16 +2151,28 @@
 
       <div class="outlet-box">
 
-        <div class="outlet-icon">
-          📍
-        </div>
+        <div class="outlet-header">
 
-        <div class="outlet-title">
-          Pilih Outlet YourTea
-        </div>
+          <button
+            type="button"
+            class="outlet-back"
+            onclick="tutupOutlet()"
+          >
+            ← Kembali
+          </button>
 
-        <div class="outlet-subtitle">
-          Pilih outlet tempat kamu sedang berada.
+          <div class="outlet-icon">
+            📍
+          </div>
+
+          <div class="outlet-title">
+            Pilih Outlet YourTea
+          </div>
+
+          <div class="outlet-subtitle">
+            Pilih outlet tempat kamu sedang berada.
+          </div>
+
         </div>
 
         <input
@@ -2112,13 +2193,6 @@
           </div>
 
         </div>
-
-        <button
-          class="outlet-back"
-          onclick="tutupOutlet()"
-        >
-          KEMBALI
-        </button>
 
       </div>
 
