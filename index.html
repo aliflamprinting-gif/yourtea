@@ -656,6 +656,102 @@
       color: #159447;
     }
 
+        /* POPUP PILIH JENIS MENU */
+
+    .jenis-menu-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 70px 16px 20px;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(4px);
+    }
+
+    .jenis-menu-overlay.show {
+      display: flex;
+    }
+
+    .jenis-menu-box {
+      width: 100%;
+      max-width: 520px;
+      max-height: calc(100vh - 90px);
+      overflow-y: auto;
+      background: white;
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    }
+
+    .jenis-menu-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .jenis-menu-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #202d1b;
+      margin-bottom: 4px;
+    }
+
+    .jenis-menu-subtitle {
+      font-size: 11px;
+      line-height: 1.4;
+      color: #7b8575;
+    }
+
+    .jenis-menu-close {
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      border: none;
+      border-radius: 50%;
+      background: #f3f5f1;
+      color: #4d5b46;
+      font-size: 23px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .jenis-menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .jenis-menu-button {
+      width: 100%;
+      border: 1px solid #e3e8df;
+      border-radius: 13px;
+      padding: 13px 14px;
+      background: white;
+      color: #35422f;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease;
+    }
+
+    .jenis-menu-button.active {
+      background: #159447;
+      border-color: #159447;
+      color: white;
+    }
+
+    .jenis-menu-button:active {
+      transform: scale(0.98);
+    }
+
     /* MOBILE */
     @media (max-width: 480px) {
 
@@ -824,13 +920,13 @@
 
         <div class="menu-topbar-row">
 
-          <button
-            class="menu-icon-button"
-            onclick="kembaliKeLanding()"
-            aria-label="Kembali"
-          >
-            ☰
-          </button>
+      <button
+        class="menu-icon-button"
+        onclick="bukaJenisMenu()"
+        aria-label="Pilih jenis menu"
+      >
+        ☰
+      </button>
 
 
           <img
@@ -887,17 +983,7 @@
         <div
           class="menu-filter"
           id="menuFilter"
-        >
-
-          <button
-            class="menu-filter-button active"
-            data-kategori="SEMUA"
-            onclick="pilihKategori('SEMUA')"
-          >
-            Semua
-          </button>
-
-        </div>
+        ></div>
 
       </div>
 
@@ -960,6 +1046,56 @@
       </nav>
 
     </section>
+
+
+    <!-- POPUP PILIH JENIS MENU -->
+    <div
+      class="jenis-menu-overlay"
+      id="jenisMenuOverlay"
+      onclick="tutupJenisMenu(event)"
+    >
+
+      <div
+        class="jenis-menu-box"
+        onclick="event.stopPropagation()"
+      >
+
+        <div class="jenis-menu-header">
+
+          <div>
+            <div class="jenis-menu-title">
+              Pilih Jenis Menu
+            </div>
+
+            <div class="jenis-menu-subtitle">
+              Tampilkan menu sesuai jenis yang kamu pilih.
+            </div>
+          </div>
+
+          <button
+            class="jenis-menu-close"
+            onclick="tutupJenisMenu()"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <div
+          class="jenis-menu-list"
+          id="jenisMenuList"
+        >
+
+          <div class="menu-loading">
+            Memuat jenis menu...
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
 
 
     <!-- FOOTER GAMBAR FOTO 3 -->
@@ -1326,7 +1462,7 @@
 
     let semuaMenu = [];
 
-    let kategoriAktif = "SEMUA";
+    let jenisAktif = "SEMUA";
 
 
     /* TAMPILKAN MENU */
@@ -1337,47 +1473,87 @@
 
       semuaMenu = data;
 
-      buatFilterKategori();
+      buatDaftarJenis();
 
       renderMenu();
 
     }
 
 
-    /* BUAT FILTER KATEGORI */
+    /* BUAT DAFTAR JENIS */
 
-    function buatFilterKategori() {
+    function buatDaftarJenis() {
 
-      const menuFilter =
+      const jenisList =
         document.getElementById(
-          "menuFilter"
+          "jenisMenuList"
         );
 
-      const kategori =
+
+      const jenisUnik =
         [
           ...new Set(
-            semuaMenu.map(
-              function(menu) {
-                return menu.kategori;
-              }
-            )
+            semuaMenu
+              .map(
+                function(menu) {
+                  return String(
+                    menu.jenis || ""
+                  ).trim();
+                }
+              )
+              .filter(
+                function(jenis) {
+                  return jenis !== "";
+                }
+              )
           )
         ];
 
 
-      menuFilter.innerHTML = `
-        <button
-          class="menu-filter-button active"
-          data-kategori="SEMUA"
-          onclick="pilihKategori('SEMUA')"
-        >
-          Semua
-        </button>
-      `;
+      jenisList.innerHTML = "";
 
 
-      kategori.forEach(
-        function(namaKategori) {
+      const semuaButton =
+        document.createElement(
+          "button"
+        );
+
+      semuaButton.className =
+        "jenis-menu-button";
+
+
+      if (
+        jenisAktif === "SEMUA"
+      ) {
+
+        semuaButton.classList.add(
+          "active"
+        );
+
+      }
+
+
+      semuaButton.textContent =
+        "Semua Menu";
+
+
+      semuaButton.onclick =
+        function() {
+
+          pilihJenis(
+            "SEMUA"
+          );
+
+        };
+
+
+      jenisList.appendChild(
+        semuaButton
+      );
+
+
+      jenisUnik.forEach(
+        function(jenis) {
 
           const button =
             document.createElement(
@@ -1385,24 +1561,35 @@
             );
 
           button.className =
-            "menu-filter-button";
+            "jenis-menu-button";
 
-          button.dataset.kategori =
-            namaKategori;
+
+          if (
+            jenisAktif === jenis
+          ) {
+
+            button.classList.add(
+              "active"
+            );
+
+          }
+
 
           button.textContent =
-            namaKategori;
+            jenis;
+
 
           button.onclick =
             function() {
 
-              pilihKategori(
-                namaKategori
+              pilihJenis(
+                jenis
               );
 
             };
 
-          menuFilter.appendChild(
+
+          jenisList.appendChild(
             button
           );
 
@@ -1412,31 +1599,66 @@
     }
 
 
-    /* PILIH KATEGORI */
+    /* BUKA FILTER JENIS */
 
-    function pilihKategori(
-      kategori
+    function bukaJenisMenu() {
+
+      const overlay =
+        document.getElementById(
+          "jenisMenuOverlay"
+        );
+
+
+      buatDaftarJenis();
+
+
+      overlay.classList.add(
+        "show"
+      );
+
+    }
+
+
+    /* TUTUP FILTER JENIS */
+
+    function tutupJenisMenu(
+      event
     ) {
 
-      kategoriAktif =
-        kategori;
+      if (
+        event &&
+        event.target !== event.currentTarget
+      ) {
+
+        return;
+
+      }
 
 
-      document
-        .querySelectorAll(
-          ".menu-filter-button"
-        )
-        .forEach(
-          function(button) {
-
-            button.classList.toggle(
-              "active",
-              button.dataset.kategori ===
-              kategori
-            );
-
-          }
+      const overlay =
+        document.getElementById(
+          "jenisMenuOverlay"
         );
+
+
+      overlay.classList.remove(
+        "show"
+      );
+
+    }
+
+
+    /* PILIH JENIS */
+
+    function pilihJenis(
+      jenis
+    ) {
+
+      jenisAktif =
+        jenis;
+
+
+      tutupJenisMenu();
 
 
       renderMenu();
@@ -1481,9 +1703,11 @@
         semuaMenu.filter(
           function(menu) {
 
-            const cocokKategori =
-              kategoriAktif === "SEMUA" ||
-              menu.kategori === kategoriAktif;
+            const cocokJenis =
+              jenisAktif === "SEMUA" ||
+              String(
+                menu.jenis || ""
+              ).trim() === jenisAktif;
 
 
             const cocokSearch =
@@ -1496,7 +1720,7 @@
 
 
             return (
-              cocokKategori &&
+              cocokJenis &&
               cocokSearch
             );
 
@@ -1536,27 +1760,14 @@
 
             kategoriMap[
               menu.kategori
-            ] = {};
-
-          }
-
-
-          if (
-            !kategoriMap[
-              menu.kategori
-            ][menu.jenis]
-          ) {
-
-            kategoriMap[
-              menu.kategori
-            ][menu.jenis] = [];
+            ] = [];
 
           }
 
 
           kategoriMap[
             menu.kategori
-          ][menu.jenis].push(
+          ].push(
             menu
           );
 
@@ -1585,127 +1796,103 @@
           `;
 
 
-          Object.keys(
-            kategoriMap[kategori]
-          ).forEach(
-            function(jenis) {
+          const menuGrid =
+            document.createElement(
+              "div"
+            );
 
-              const jenisTitle =
-                document.createElement(
-                  "div"
-                );
-
-              jenisTitle.className =
-                "menu-jenis";
-
-              jenisTitle.textContent =
-                jenis;
+          menuGrid.className =
+            "menu-grid";
 
 
-              const menuGrid =
-                document.createElement(
-                  "div"
-                );
+          kategoriMap[kategori]
+            .forEach(
+              function(menu) {
 
-              menuGrid.className =
-                "menu-grid";
+                const card =
+                  document.createElement(
+                    "div"
+                  );
 
-
-              kategoriMap[kategori][jenis]
-                .forEach(
-                  function(menu) {
-
-                    const card =
-                      document.createElement(
-                        "div"
-                      );
-
-                    card.className =
-                      "menu-card";
+                card.className =
+                  "menu-card";
 
 
-                    const gambar =
-                      menu.gambar ||
-                      "BELUM ADA GAMBAR.png";
+                const gambar =
+                  menu.gambar ||
+                  "BELUM ADA GAMBAR.png";
 
 
-                    const harga =
-                      Number(
-                        String(
-                          menu.harga
-                        )
-                          .replace(
-                            /[^\d]/g,
-                            ""
-                          )
-                      );
+                const harga =
+                  Number(
+                    String(
+                      menu.harga
+                    )
+                      .replace(
+                        /[^\d]/g,
+                        ""
+                      )
+                  );
 
 
-                    card.innerHTML = `
-                      <div class="menu-image-wrap">
+                card.innerHTML = `
+                  <div class="menu-image-wrap">
 
-                        <img
-                          src="${escapeHTML(gambar)}"
-                          alt="${escapeHTML(menu.nama_menu)}"
-                          class="menu-image"
-                          onerror="this.src='BELUM%20ADA%20GAMBAR.png'"
-                        >
+                    <img
+                      src="${escapeHTML(gambar)}"
+                      alt="${escapeHTML(menu.nama_menu)}"
+                      class="menu-image"
+                      onerror="this.src='BELUM%20ADA%20GAMBAR.png'"
+                    >
 
-                        <button
-                          class="menu-plus"
-                          type="button"
-                          onclick="event.stopPropagation(); bukaDetailMenu('${escapeJS(menu.id_menu)}')"
-                        >
-                          +
-                        </button>
+                    <button
+                      class="menu-plus"
+                      type="button"
+                      onclick="event.stopPropagation(); bukaDetailMenu('${escapeJS(menu.id_menu)}')"
+                    >
+                      +
+                    </button>
 
-                      </div>
+                  </div>
 
-                      <div class="menu-info">
+                  <div class="menu-info">
 
-                        <div class="menu-name">
-                          ${escapeHTML(menu.nama_menu)}
-                        </div>
+                    <div class="menu-name">
+                      ${escapeHTML(menu.nama_menu)}
+                    </div>
 
-                        <div class="menu-size">
-                          ${escapeHTML(menu.variasi_ukuran || "")}
-                        </div>
+                    <div class="menu-size">
+                      ${escapeHTML(menu.variasi_ukuran || "")}
+                    </div>
 
-                        <div class="menu-price">
-                          Rp${harga.toLocaleString("id-ID")}
-                        </div>
+                    <div class="menu-price">
+                      Rp${harga.toLocaleString("id-ID")}
+                    </div>
 
-                      </div>
-                    `;
-
-
-                    card.onclick =
-                      function() {
-
-                        bukaDetailMenu(
-                          menu.id_menu
-                        );
-
-                      };
+                  </div>
+                `;
 
 
-                    menuGrid.appendChild(
-                      card
+                card.onclick =
+                  function() {
+
+                    bukaDetailMenu(
+                      menu.id_menu
                     );
 
-                  }
+                  };
+
+
+                menuGrid.appendChild(
+                  card
                 );
 
+              }
+            );
 
-              kategoriSection.appendChild(
-                jenisTitle
-              );
 
-              kategoriSection.appendChild(
-                menuGrid
-              );
-
-            }
+          kategoriSection.appendChild(
+            menuGrid
           );
 
 
