@@ -231,12 +231,108 @@
       cursor: pointer;
     }
 
+    /* POPUP PILIH OUTLET */
+    .outlet-message {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(31, 45, 17, 0.45);
+      backdrop-filter: blur(5px);
+    }
+
+    .outlet-message.show {
+      display: flex;
+    }
+
+    .outlet-box {
+      width: 100%;
+      max-width: 380px;
+      background: #fffef1;
+      border-radius: 24px;
+      padding: 28px 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .outlet-icon {
+      text-align: center;
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .outlet-title {
+      text-align: center;
+      font-size: 21px;
+      font-weight: 800;
+      color: #40551d;
+      margin-bottom: 8px;
+    }
+
+    .outlet-subtitle {
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #687653;
+      margin-bottom: 20px;
+    }
+
+    .outlet-card {
+      width: 100%;
+      background: #f5f9df;
+      border: 1px solid #dcebb7;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .outlet-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #40551d;
+      margin-bottom: 5px;
+    }
+
+    .outlet-address {
+      font-size: 12px;
+      line-height: 1.45;
+      color: #708052;
+      margin-bottom: 14px;
+    }
+
+    .outlet-select {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      background: #76b84b;
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .outlet-back {
+      width: 100%;
+      border: 1px solid #dcebb7;
+      border-radius: 12px;
+      padding: 12px;
+      background: transparent;
+      color: #607342;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
     /* MOBILE */
     @media (max-width: 480px) {
-     .content {
-    min-height: auto;
-    padding: 34px 20px 10px;
-    }
+
+      .content {
+        min-height: auto;
+        padding: 34px 20px 10px;
+      }
 
       .logo {
         width: 145px;
@@ -272,10 +368,20 @@
         max-width: none;
         transform: translateX(0);
       }
+
+      .outlet-message {
+        padding: 18px;
+      }
+
+      .outlet-box {
+        border-radius: 21px;
+        padding: 23px 18px;
+      }
     }
 
     /* HP PENDEK */
     @media (max-height: 700px) and (max-width: 480px) {
+
       .content {
         padding-top: 25px;
       }
@@ -391,6 +497,57 @@
     </footer>
 
 
+    <!-- POPUP PILIH OUTLET -->
+    <div
+      class="outlet-message"
+      id="outletMessage"
+    >
+
+      <div class="outlet-box">
+
+        <div class="outlet-icon">
+          📍
+        </div>
+
+        <div class="outlet-title">
+          Pilih Outlet YourTea
+        </div>
+
+        <div class="outlet-subtitle">
+          Pilih outlet tempat kamu sedang berada.
+        </div>
+
+        <div class="outlet-card">
+
+          <div class="outlet-name">
+            YourTea Cikal
+          </div>
+
+          <div class="outlet-address">
+            Outlet YourTea
+          </div>
+
+          <button
+            class="outlet-select"
+            onclick="pilihOutlet()"
+          >
+            PILIH OUTLET
+          </button>
+
+        </div>
+
+        <button
+          class="outlet-back"
+          onclick="tutupOutlet()"
+        >
+          KEMBALI
+        </button>
+
+      </div>
+
+    </div>
+
+
     <!-- POPUP PESAN ONLINE -->
     <div
       class="online-message"
@@ -430,8 +587,28 @@
 
     function pilihToko() {
 
+      const popup =
+        document.getElementById("outletMessage");
+
+      popup.classList.add("show");
+
+    }
+
+
+    function tutupOutlet() {
+
+      const popup =
+        document.getElementById("outletMessage");
+
+      popup.classList.remove("show");
+
+    }
+
+
+    function pilihOutlet() {
+
       alert(
-        "Pilih Outlet YourTea akan dibuat di tahap berikutnya."
+        "Outlet YourTea berhasil dipilih. Halaman MENU akan dibuat di tahap berikutnya."
       );
 
     }
