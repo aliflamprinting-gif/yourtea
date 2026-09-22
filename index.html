@@ -3357,6 +3357,8 @@
 
     let toppingDetailMenu = [];
 
+    let keranjang = [];
+
 
     async function bukaDetailMenu(
       idMenu
@@ -3810,10 +3812,120 @@
       }
 
 
-      alert(
-        menuDetailAktif.nama_menu +
-        " siap dimasukkan ke keranjang."
+      const hargaMenu =
+        Number(
+          String(
+            menuDetailAktif.harga || 0
+          )
+            .replace(
+              /[^\d]/g,
+              ""
+            )
+        );
+
+
+      const totalTopping =
+        toppingDetailMenu.reduce(
+          function(total, topping) {
+
+            return total +
+              Number(
+                topping.harga || 0
+              );
+
+          },
+          0
+        );
+
+
+      const hargaSatuan =
+        hargaMenu +
+        totalTopping;
+
+
+      const itemKeranjang = {
+
+        id_menu:
+          menuDetailAktif.id_menu,
+
+        nama_menu:
+          menuDetailAktif.nama_menu,
+
+        harga_menu:
+          hargaMenu,
+
+        topping:
+          [...toppingDetailMenu],
+
+        qty:
+          qtyDetailMenu,
+
+        harga_satuan:
+          hargaSatuan,
+
+        total:
+          hargaSatuan *
+          qtyDetailMenu
+
+      };
+
+
+      keranjang.push(
+        itemKeranjang
       );
+
+
+      updateCartCount();
+
+
+      document
+        .getElementById(
+          "detailMenuOverlay"
+        )
+        .classList.remove(
+          "show"
+        );
+
+
+      alert(
+        "✅ " +
+        menuDetailAktif.nama_menu +
+        " berhasil ditambahkan ke keranjang."
+      );
+
+    }
+
+
+    function updateCartCount() {
+
+      const totalQty =
+        keranjang.reduce(
+          function(total, item) {
+
+            return total +
+              Number(
+                item.qty || 0
+              );
+
+          },
+          0
+        );
+
+
+      const cartCount =
+        document.getElementById(
+          "cartCount"
+        );
+
+
+      if (
+        cartCount
+      ) {
+
+        cartCount.textContent =
+          totalQty;
+
+      }
 
     }
 
@@ -3822,8 +3934,85 @@
 
     function bukaKeranjang() {
 
+      if (
+        keranjang.length === 0
+      ) {
+
+        alert(
+          "Keranjang masih kosong."
+        );
+
+        return;
+
+      }
+
+
+      let rincian =
+        "🛒 KERANJANG\n\n";
+
+
+      keranjang.forEach(
+        function(item, index) {
+
+          rincian +=
+            (index + 1) +
+            ". " +
+            item.nama_menu +
+            " x" +
+            item.qty +
+            "\n";
+
+
+          if (
+            item.topping.length > 0
+          ) {
+
+            item.topping.forEach(
+              function(topping) {
+
+                rincian +=
+                  "   + " +
+                  topping.nama_topping +
+                  "\n";
+
+              }
+            );
+
+          }
+
+
+          rincian +=
+            "   Rp" +
+            item.total.toLocaleString(
+              "id-ID"
+            ) +
+            "\n\n";
+
+        }
+      );
+
+
+      const total =
+        keranjang.reduce(
+          function(total, item) {
+
+            return total +
+              item.total;
+
+          },
+          0
+        );
+
+
+      rincian +=
+        "TOTAL: Rp" +
+        total.toLocaleString(
+          "id-ID"
+        );
+
+
       alert(
-        "Keranjang akan dibuat di tahap berikutnya."
+        rincian
       );
 
     }
