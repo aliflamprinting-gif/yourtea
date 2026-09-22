@@ -30,6 +30,12 @@
       overflow-x: hidden;
     }
 
+
+    body.popup-open {
+      overflow: hidden;
+      touch-action: none;
+    }
+
     .page {
       position: relative;
       min-height: 100vh;
@@ -2617,6 +2623,19 @@
       "https://script.google.com/macros/s/AKfycbw_-3sp8C4ujP55m9Ogg0XAgh9lkI_paivXhTn9AZqkisL-w45HrP6SQm7eV7117Gmj4A/exec";
 
 
+        function kunciScrollPopup(
+      aktif
+    ) {
+
+      document.body.classList.toggle(
+        "popup-open",
+        aktif
+      );
+
+    }
+
+
+
     /* PILIH SAYA SEDANG DI TOKO */
     function pilihToko() {
 
@@ -2624,6 +2643,12 @@
         document.getElementById("outletMessage");
 
       popup.classList.add("show");
+
+
+      kunciScrollPopup(
+        true
+      );
+
 
       const search =
         document.getElementById("outletSearch");
@@ -2848,6 +2873,12 @@
         document.getElementById("outletMessage");
 
       popup.classList.remove("show");
+
+
+      kunciScrollPopup(
+        false
+      );
+
 
       const menuPage =
         document.getElementById("menuPage");
@@ -4253,6 +4284,11 @@
           "show"
         );
 
+
+      kunciScrollPopup(
+        true
+      );
+
     }
 
 
@@ -4617,6 +4653,10 @@
           "show"
         );
 
+            kunciScrollPopup(
+        false
+      );
+
     }
 
 
@@ -4841,6 +4881,11 @@
         "show"
       );
 
+
+      kunciScrollPopup(
+        true
+      );
+
     }
 
 
@@ -4865,6 +4910,11 @@
         .classList.remove(
           "show"
         );
+
+
+      kunciScrollPopup(
+        false
+      );
 
     }
 
@@ -5274,6 +5324,11 @@
         document.getElementById("outletMessage");
 
       popup.classList.remove("show");
+
+
+      kunciScrollPopup(
+        false
+      );
 
     }
 
