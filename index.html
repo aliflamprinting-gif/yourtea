@@ -4277,26 +4277,6 @@
                     Memuat topping...
                   </div>
 
-
-                  <button
-                    type="button"
-                    onclick="tutupToppingDetail()"
-                    style="
-                      width:100%;
-                      height:40px;
-                      margin-top:12px;
-                      border:none;
-                      border-radius:12px;
-                      background:#159447;
-                      color:#ffffff;
-                      font-size:12px;
-                      font-weight:900;
-                      cursor:pointer;
-                    "
-                  >
-                    SELESAI
-                  </button>
-
                 </div>
 
               </div>
@@ -4437,31 +4417,7 @@
         );
 
 
-      const harga =
-        variasiMenuAktif
-          ? Number(
-              variasiMenuAktif.harga || 0
-            )
-          : 0;
-
-
-      const hargaElement =
-        document.getElementById(
-          "detailMenuPrice"
-        );
-
-
-      if (
-        hargaElement
-      ) {
-
-        hargaElement.textContent =
-          "Rp" +
-          harga.toLocaleString(
-            "id-ID"
-          );
-
-      }
+      updateHargaDetailMenu();
 
     }
 
@@ -4703,25 +4659,81 @@
 
         }
 
-        return;
+      } else {
+
+        toppingDetailMenu =
+          toppingDetailMenu.filter(
+            function(item) {
+
+              return String(
+                item.id_topping
+              ) !== String(
+                idTopping
+              );
+
+            }
+          );
 
       }
 
 
-      toppingDetailMenu =
-        toppingDetailMenu.filter(
-          function(item) {
-
-            return String(
-              item.id_topping
-            ) !== String(
-              idTopping
-            );
-
-          }
-        );
+      updateHargaDetailMenu();
 
     }
+
+
+    function updateHargaDetailMenu() {
+
+      const hargaMenu =
+        variasiMenuAktif
+          ? Number(
+              variasiMenuAktif.harga || 0
+            )
+          : 0;
+
+
+      const hargaTopping =
+        toppingDetailMenu.reduce(
+          function(total, topping) {
+
+            return (
+              total +
+              Number(
+                topping.harga || 0
+              )
+            );
+
+          },
+          0
+        );
+
+
+      const totalHarga =
+        hargaMenu +
+        hargaTopping;
+
+
+      const hargaElement =
+        document.getElementById(
+          "detailMenuPrice"
+        );
+
+
+      if (
+        hargaElement
+      ) {
+
+        hargaElement.textContent =
+          "Rp" +
+          totalHarga.toLocaleString(
+            "id-ID"
+          );
+
+      }
+
+    }
+
+
 
 
     function ubahQtyDetail(
