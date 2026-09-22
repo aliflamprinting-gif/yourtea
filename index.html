@@ -1325,6 +1325,264 @@
     }
 
 
+    /* POPUP KERANJANG */
+
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.42);
+      backdrop-filter: blur(4px);
+    }
+
+    .cart-overlay.show {
+      display: flex;
+    }
+
+    .cart-box {
+      width: 100%;
+      max-width: 520px;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      border-radius: 24px 24px 0 0;
+      overflow: hidden;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    .cart-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 16px 14px;
+      border-bottom: 1px solid #eeeeee;
+      background: #ffffff;
+    }
+
+    .cart-header-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #202d1b;
+    }
+
+    .cart-header-count {
+      margin-top: 3px;
+      font-size: 11px;
+      color: #7b8575;
+    }
+
+    .cart-close {
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      border: none;
+      border-radius: 50%;
+      background: #f3f5f1;
+      color: #4d5b46;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .cart-list {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 14px 16px;
+      background: #fafcf9;
+    }
+
+    .cart-empty {
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .cart-empty-icon {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 15px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eaf5df;
+      font-size: 30px;
+    }
+
+    .cart-empty-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: #263522;
+      margin-bottom: 6px;
+    }
+
+    .cart-empty-text {
+      max-width: 250px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #7b8575;
+    }
+
+    .cart-item {
+      width: 100%;
+      display: flex;
+      gap: 11px;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #e8ece5;
+      border-radius: 17px;
+      background: #ffffff;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .cart-item-image {
+      width: 76px;
+      height: 76px;
+      flex-shrink: 0;
+      border-radius: 13px;
+      object-fit: cover;
+      background: #f2f5ed;
+    }
+
+    .cart-item-content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-item-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .cart-item-name {
+      font-size: 13px;
+      line-height: 1.3;
+      font-weight: 900;
+      color: #263522;
+    }
+
+    .cart-item-delete {
+      width: 27px;
+      height: 27px;
+      flex-shrink: 0;
+      border: none;
+      border-radius: 8px;
+      background: #fff1ee;
+      color: #d95743;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .cart-item-toppings {
+      margin-top: 4px;
+      font-size: 10px;
+      line-height: 1.45;
+      color: #7b8575;
+    }
+
+    .cart-item-price {
+      margin-top: 6px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #e87520;
+    }
+
+    .cart-item-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 9px;
+    }
+
+    .cart-qty-control {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .cart-qty-button {
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background: #159447;
+      color: white;
+      font-size: 17px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .cart-qty-value {
+      min-width: 18px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 900;
+      color: #263522;
+    }
+
+    .cart-item-subtotal {
+      font-size: 12px;
+      font-weight: 900;
+      color: #263522;
+    }
+
+    .cart-footer {
+      flex-shrink: 0;
+      padding: 13px 16px calc(13px + env(safe-area-inset-bottom));
+      background: white;
+      border-top: 1px solid #eeeeee;
+    }
+
+    .cart-total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 11px;
+    }
+
+    .cart-total-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #7b8575;
+    }
+
+    .cart-total-value {
+      font-size: 19px;
+      font-weight: 900;
+      color: #e87520;
+    }
+
+    .cart-checkout {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 14px;
+      background: #159447;
+      color: white;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 7px 16px rgba(21, 148, 71, 0.18);
+    }
+
+
     /* MOBILE */
     @media (max-width: 480px) {
 
@@ -2088,6 +2346,86 @@
 
     </div>
 
+    <!-- POPUP KERANJANG -->
+    <div
+      class="cart-overlay"
+      id="cartOverlay"
+      onclick="tutupKeranjang(event)"
+    >
+
+      <div
+        class="cart-box"
+        onclick="event.stopPropagation()"
+      >
+
+        <div class="cart-header">
+
+          <div>
+
+            <div class="cart-header-title">
+              Keranjang
+            </div>
+
+            <div
+              class="cart-header-count"
+              id="cartHeaderCount"
+            >
+              0 item
+            </div>
+
+          </div>
+
+          <button
+            type="button"
+            class="cart-close"
+            onclick="tutupKeranjang()"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <div
+          class="cart-list"
+          id="cartList"
+        >
+        </div>
+
+
+        <div class="cart-footer">
+
+          <div class="cart-total-row">
+
+            <div class="cart-total-label">
+              Total Pesanan
+            </div>
+
+            <div
+              class="cart-total-value"
+              id="cartTotal"
+            >
+              Rp0
+            </div>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="cart-checkout"
+            onclick="mulaiCheckout()"
+          >
+            LANJUT KE PEMESANAN
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
     <!-- POPUP PILIH JENIS MENU -->
     <div
       class="jenis-menu-overlay"
@@ -2640,6 +2978,8 @@
     let jenisAktif = "SEMUA";
 
     let kategoriAktif = "SEMUA";
+
+    let keranjang = [];
 
 
     /* TAMPILKAN MENU */
@@ -3851,6 +4191,10 @@
         nama_menu:
           menuDetailAktif.nama_menu,
 
+        gambar:
+          menuDetailAktif.gambar ||
+          "BELUM ADA GAMBAR.png",
+
         harga_menu:
           hargaMenu,
 
@@ -3887,11 +4231,7 @@
         );
 
 
-      alert(
-        "✅ " +
-        menuDetailAktif.nama_menu +
-        " berhasil ditambahkan ke keranjang."
-      );
+      bukaKeranjang();
 
     }
 
@@ -3930,92 +4270,379 @@
     }
 
 
-    /* KERANJANG - TAHAP BERIKUTNYA */
-
     function bukaKeranjang() {
 
-      if (
-        keranjang.length === 0
-      ) {
-
-        alert(
-          "Keranjang masih kosong."
+      const overlay =
+        document.getElementById(
+          "cartOverlay"
         );
+
+
+      renderKeranjang();
+
+
+      overlay.classList.add(
+        "show"
+      );
+
+    }
+
+
+    function tutupKeranjang(
+      event
+    ) {
+
+      if (
+        event &&
+        event.target !== event.currentTarget
+      ) {
 
         return;
 
       }
 
 
-      let rincian =
-        "🛒 KERANJANG\n\n";
+      document
+        .getElementById(
+          "cartOverlay"
+        )
+        .classList.remove(
+          "show"
+        );
+
+    }
 
 
-      keranjang.forEach(
-        function(item, index) {
+    function renderKeranjang() {
 
-          rincian +=
-            (index + 1) +
-            ". " +
-            item.nama_menu +
-            " x" +
-            item.qty +
-            "\n";
+      const cartList =
+        document.getElementById(
+          "cartList"
+        );
 
+      const cartHeaderCount =
+        document.getElementById(
+          "cartHeaderCount"
+        );
 
-          if (
-            item.topping.length > 0
-          ) {
-
-            item.topping.forEach(
-              function(topping) {
-
-                rincian +=
-                  "   + " +
-                  topping.nama_topping +
-                  "\n";
-
-              }
-            );
-
-          }
+      const cartTotal =
+        document.getElementById(
+          "cartTotal"
+        );
 
 
-          rincian +=
-            "   Rp" +
-            item.total.toLocaleString(
-              "id-ID"
-            ) +
-            "\n\n";
+      if (
+        !cartList
+      ) {
 
-        }
-      );
+        return;
+
+      }
 
 
-      const total =
+      const totalQty =
         keranjang.reduce(
           function(total, item) {
 
             return total +
-              item.total;
+              Number(
+                item.qty || 0
+              );
 
           },
           0
         );
 
 
-      rincian +=
-        "TOTAL: Rp" +
-        total.toLocaleString(
-          "id-ID"
+      const totalHarga =
+        keranjang.reduce(
+          function(total, item) {
+
+            return total +
+              Number(
+                item.total || 0
+              );
+
+          },
+          0
         );
 
 
-      alert(
-        rincian
+      if (
+        cartHeaderCount
+      ) {
+
+        cartHeaderCount.textContent =
+          totalQty +
+          (
+            totalQty === 1
+              ? " item"
+              : " item"
+          );
+
+      }
+
+
+      if (
+        cartTotal
+      ) {
+
+        cartTotal.textContent =
+          "Rp" +
+          totalHarga.toLocaleString(
+            "id-ID"
+          );
+
+      }
+
+
+      if (
+        keranjang.length === 0
+      ) {
+
+        cartList.innerHTML = `
+
+          <div class="cart-empty">
+
+            <div class="cart-empty-icon">
+              🛒
+            </div>
+
+            <div class="cart-empty-title">
+              Keranjang masih kosong
+            </div>
+
+            <div class="cart-empty-text">
+              Yuk pilih menu favorit kamu
+              dan tambahkan ke keranjang.
+            </div>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      cartList.innerHTML = "";
+
+
+      keranjang.forEach(
+        function(item, index) {
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+
+          card.className =
+            "cart-item";
+
+
+          const gambar =
+            item.gambar ||
+            "BELUM ADA GAMBAR.png";
+
+
+          const toppingText =
+            item.topping.length > 0
+              ? item.topping
+                  .map(
+                    function(topping) {
+
+                      return topping.nama_topping;
+
+                    }
+                  )
+                  .join(
+                    ", "
+                  )
+              : "Tanpa topping";
+
+
+          card.innerHTML = `
+
+            <img
+              src="${escapeHTML(gambar)}"
+              alt="${escapeHTML(item.nama_menu)}"
+              class="cart-item-image"
+              onerror="this.src='BELUM%20ADA%20GAMBAR.png'"
+            >
+
+
+            <div class="cart-item-content">
+
+              <div class="cart-item-top">
+
+                <div class="cart-item-name">
+                  ${escapeHTML(item.nama_menu)}
+                </div>
+
+                <button
+                  type="button"
+                  class="cart-item-delete"
+                  onclick="hapusItemKeranjang(${index})"
+                  aria-label="Hapus item"
+                >
+                  🗑
+                </button>
+
+              </div>
+
+
+              <div class="cart-item-toppings">
+                ${escapeHTML(toppingText)}
+              </div>
+
+
+              <div class="cart-item-price">
+                Rp${Number(
+                  item.harga_satuan || 0
+                ).toLocaleString("id-ID")}
+              </div>
+
+
+              <div class="cart-item-bottom">
+
+                <div class="cart-qty-control">
+
+                  <button
+                    type="button"
+                    class="cart-qty-button"
+                    onclick="ubahQtyKeranjang(${index}, -1)"
+                  >
+                    −
+                  </button>
+
+                  <div class="cart-qty-value">
+                    ${item.qty}
+                  </div>
+
+                  <button
+                    type="button"
+                    class="cart-qty-button"
+                    onclick="ubahQtyKeranjang(${index}, 1)"
+                  >
+                    +
+                  </button>
+
+                </div>
+
+
+                <div class="cart-item-subtotal">
+                  Rp${Number(
+                    item.total || 0
+                  ).toLocaleString("id-ID")}
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+
+          cartList.appendChild(
+            card
+          );
+
+        }
       );
 
     }
+
+
+    function ubahQtyKeranjang(
+      index,
+      perubahan
+    ) {
+
+      if (
+        !keranjang[index]
+      ) {
+
+        return;
+
+      }
+
+
+      keranjang[index].qty +=
+        perubahan;
+
+
+      if (
+        keranjang[index].qty < 1
+      ) {
+
+        keranjang.splice(
+          index,
+          1
+        );
+
+      } else {
+
+        keranjang[index].total =
+          keranjang[index].harga_satuan *
+          keranjang[index].qty;
+
+      }
+
+
+      updateCartCount();
+
+      renderKeranjang();
+
+    }
+
+
+    function hapusItemKeranjang(
+      index
+    ) {
+
+      if (
+        !keranjang[index]
+      ) {
+
+        return;
+
+      }
+
+
+      keranjang.splice(
+        index,
+        1
+      );
+
+
+      updateCartCount();
+
+      renderKeranjang();
+
+    }
+
+
+    function mulaiCheckout() {
+
+      if (
+        keranjang.length === 0
+      ) {
+
+        return;
+
+      }
+
+
+      alert(
+        "Checkout akan kita buat di tahap berikutnya."
+      );
+
+    }
+
+
+    /* TUTUP POPUP OUTLET */
 
     /* TUTUP POPUP OUTLET */
     function tutupOutlet() {
