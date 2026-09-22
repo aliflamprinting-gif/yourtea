@@ -2974,6 +2974,11 @@
         const resultVariasi =
           await responseVariasi.json();
 
+          console.log(
+  "DATA VARIASI DARI API:",
+  resultVariasi
+);
+
         if (
           resultVariasi.status !== "success" ||
           !Array.isArray(resultVariasi.data)
