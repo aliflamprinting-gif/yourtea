@@ -1762,6 +1762,27 @@
         </button>
 
 
+        <!-- SAYA AKAN KE TOKO -->
+        <button
+          class="choice"
+          onclick="pilihAkanKeToko()"
+        >
+          <div class="choice-icon">
+            🛍️
+          </div>
+
+          <div class="choice-text">
+            <div class="choice-title">
+              SAYA AKAN KE TOKO
+            </div>
+
+            <div class="choice-description">
+              Klik di sini untuk buat list order sebelum sampai ke cabang kami
+            </div>
+          </div>
+        </button>
+
+
         <!-- PESAN ONLINE -->
         <button
           class="choice"
@@ -1777,7 +1798,7 @@
             </div>
 
             <div class="choice-description">
-              Klik di sini untuk pesan online
+              Klik di sini
             </div>
           </div>
         </button>
@@ -2620,8 +2641,6 @@
 
     }
 
-
-
     /* PILIH SAYA SEDANG DI TOKO */
     function pilihToko() {
 
@@ -2629,6 +2648,17 @@
         document.getElementById("outletMessage");
 
       popup.classList.add("show");
+
+
+      const subtitle =
+        document.querySelector(
+          "#outletMessage .outlet-subtitle"
+        );
+
+      if (subtitle) {
+        subtitle.textContent =
+          "Pilih outlet tempat kamu sedang berada.";
+      }
 
 
       kunciScrollPopup(
@@ -2647,6 +2677,42 @@
 
     }
 
+
+    /* PILIH SAYA AKAN KE TOKO */
+    function pilihAkanKeToko() {
+
+      const popup =
+        document.getElementById("outletMessage");
+
+      popup.classList.add("show");
+
+
+      const subtitle =
+        document.querySelector(
+          "#outletMessage .outlet-subtitle"
+        );
+
+      if (subtitle) {
+        subtitle.textContent =
+          "Pilih outlet yang akan kamu kunjungi.";
+      }
+
+
+      kunciScrollPopup(
+        true
+      );
+
+
+      const search =
+        document.getElementById("outletSearch");
+
+      if (search) {
+        search.value = "";
+      }
+
+      loadCabang();
+
+    }
 
     /* AMBIL DATA CABANG DARI API */
     async function loadCabang() {
