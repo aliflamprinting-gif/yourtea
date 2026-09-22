@@ -4113,6 +4113,7 @@
                               ? "aktif"
                               : ""
                           }"
+                          data-id-variasi="${escapeHTML(variasi.id_variasi)}"
                           onclick="pilihVariasiDetail('${escapeJS(variasi.id_variasi)}')"
                           style="
                             padding:14px 16px;
@@ -4284,6 +4285,38 @@
         ) || null;
 
 
+      document
+        .querySelectorAll(
+          ".detail-menu-variasi-card"
+        )
+        .forEach(
+          function(card) {
+
+            const aktif =
+              String(
+                card.getAttribute(
+                  "data-id-variasi"
+                )
+              ) === String(
+                idVariasi
+              );
+
+
+            card.style.border =
+              aktif
+                ? "2px solid #7ab82b"
+                : "2px solid #e1e8d5";
+
+
+            card.style.background =
+              aktif
+                ? "#f3f9e9"
+                : "#ffffff";
+
+          }
+        );
+
+
       const harga =
         variasiMenuAktif
           ? Number(
@@ -4311,9 +4344,6 @@
       }
 
     }
-
-
-
 
     async function loadToppingDetail() {
 
