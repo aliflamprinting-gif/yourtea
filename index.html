@@ -3557,27 +3557,34 @@
       menuList.innerHTML = "";
 
 
-      const kategoriMap = {};
+      const jenisMap = {};
 
 
       filtered.forEach(
         function(menu) {
 
+          const jenis =
+            String(
+              menu.jenis || ""
+            ).trim() ||
+            "LAINNYA";
+
+
           if (
-            !kategoriMap[
-              menu.kategori
+            !jenisMap[
+              jenis
             ]
           ) {
 
-            kategoriMap[
-              menu.kategori
+            jenisMap[
+              jenis
             ] = [];
 
           }
 
 
-          kategoriMap[
-            menu.kategori
+          jenisMap[
+            jenis
           ].push(
             menu
           );
@@ -3587,9 +3594,9 @@
 
 
       Object.keys(
-        kategoriMap
+        jenisMap
       ).forEach(
-        function(kategori) {
+        function(jenis) {
 
           const kategoriSection =
             document.createElement(
@@ -3603,7 +3610,7 @@
 
           kategoriSection.innerHTML = `
             <div class="menu-category-title">
-              ${escapeHTML(kategori)}
+              ${escapeHTML(jenis)}
             </div>
           `;
 
@@ -3618,7 +3625,7 @@
             "menu-grid";
 
 
-          kategoriMap[kategori]
+          jenisMap[jenis]
             .forEach(
               function(menu) {
 
