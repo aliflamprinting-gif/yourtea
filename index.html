@@ -3001,6 +3001,8 @@
         "YourTea";
 
 
+      muatKeranjang();
+
       loadMenu();
 
 
@@ -4027,6 +4029,64 @@
 
     let keranjang = [];
 
+        function simpanKeranjang() {
+
+          localStorage.setItem(
+            "yourtea_keranjang",
+            JSON.stringify(
+              keranjang
+            )
+          );
+
+        }
+
+            function muatKeranjang() {
+
+      try {
+
+        const data =
+          localStorage.getItem(
+            "yourtea_keranjang"
+          );
+
+        if (
+          data
+        ) {
+
+          const dataKeranjang =
+            JSON.parse(
+              data
+            );
+
+          if (
+            Array.isArray(
+              dataKeranjang
+            )
+          ) {
+
+            keranjang =
+              dataKeranjang;
+
+          }
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Gagal memuat keranjang:",
+          error
+        );
+
+        keranjang = [];
+
+      }
+
+
+      updateCartCount();
+
+    }
+
     let editKeranjangIndex = null;
 
     let variasiMenuAktif = null;
@@ -4992,6 +5052,9 @@
           null;
 
 
+        simpanKeranjang();
+
+
         updateCartCount();
 
 
@@ -5055,6 +5118,9 @@
       keranjang.push(
         itemKeranjang
       );
+
+
+      simpanKeranjang();
 
 
       updateCartCount();
@@ -5680,6 +5746,9 @@
       }
 
 
+      simpanKeranjang();
+
+
       updateCartCount();
 
       renderKeranjang();
@@ -5704,6 +5773,9 @@
         index,
         1
       );
+
+
+      simpanKeranjang();
 
 
       updateCartCount();
