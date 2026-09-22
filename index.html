@@ -2936,30 +2936,83 @@
 
       try {
 
-        const response =
+        const responseMenu =
           await fetch(
-            API_URL + "?action=getMenu"
+            API_URL + "?action=getMenuV1"
           );
 
-        if (!response.ok) {
+        if (!responseMenu.ok) {
           throw new Error(
-            "Gagal menghubungi API."
+            "Gagal menghubungi API menu."
           );
         }
 
-        const result =
-          await response.json();
+        const resultMenu =
+          await responseMenu.json();
 
         if (
-          result.status !== "success" ||
-          !Array.isArray(result.data)
+          resultMenu.status !== "success" ||
+          !Array.isArray(resultMenu.data)
         ) {
           throw new Error(
-            "Data menu tidak valid."
+            "Data menu V1 tidak valid."
           );
         }
 
-        if (result.data.length === 0) {
+
+        const responseVariasi =
+          await fetch(
+            API_URL + "?action=getVariasiMenu"
+          );
+
+        if (!responseVariasi.ok) {
+          throw new Error(
+            "Gagal menghubungi API variasi menu."
+          );
+        }
+
+        const resultVariasi =
+          await responseVariasi.json();
+
+        if (
+          resultVariasi.status !== "success" ||
+          !Array.isArray(resultVariasi.data)
+        ) {
+          throw new Error(
+            "Data variasi menu tidak valid."
+          );
+        }
+
+
+        const menuV1 =
+          resultMenu.data.map(
+            function(menu) {
+
+              const variasi =
+                resultVariasi.data.filter(
+                  function(item) {
+
+                    return String(
+                      item.id_menu
+                    ) === String(
+                      menu.id_menu
+                    );
+
+                  }
+                );
+
+              return {
+                ...menu,
+                variasi_menu: variasi
+              };
+
+            }
+          );
+
+
+        if (
+          menuV1.length === 0
+        ) {
 
           menuList.innerHTML = `
             <div class="menu-error">
@@ -2971,8 +3024,9 @@
 
         }
 
+
         tampilkanMenu(
-          result.data
+          menuV1
         );
 
       } catch (error) {
