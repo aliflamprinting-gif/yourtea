@@ -913,11 +913,11 @@
     }
 
     .menu-category-title {
-      font-size: 20px;
-      font-weight: 800;
-      color: #202d1b;
+      font-size: 16px;
+      font-weight: 900;
+      color: #159447;
       margin-bottom: 12px;
-      text-align: left;
+      text-align: center;
     }
 
     .menu-jenis {
@@ -2264,18 +2264,10 @@
 
           <button
             class="menu-filter-button active"
-            data-kategori="SEMUA"
-            onclick="pilihKategori('SEMUA')"
-          >
-            Semua
-          </button>
-
-          <button
-            class="menu-filter-button"
             data-kategori="MINUMAN"
             onclick="pilihKategori('MINUMAN')"
           >
-            Minuman
+            MINUMAN
           </button>
 
           <button
@@ -2283,15 +2275,7 @@
             data-kategori="MAKANAN"
             onclick="pilihKategori('MAKANAN')"
           >
-            Makanan
-          </button>
-
-          <button
-            class="menu-filter-button"
-            data-kategori="PAKET NGEMIL"
-            onclick="pilihKategori('PAKET NGEMIL')"
-          >
-            Paket Ngemil
+            MAKANAN
           </button>
 
         </div>
@@ -2300,6 +2284,7 @@
         <div
           class="menu-jenis-filter"
           id="menuJenisFilter"
+          style="display:none;"
         ></div>
 
       </div>
@@ -3094,7 +3079,7 @@
 
     let jenisAktif = "SEMUA";
 
-    let kategoriAktif = "SEMUA";
+    let kategoriAktif = "MINUMAN";
 
     /* TAMPILKAN MENU */
 
