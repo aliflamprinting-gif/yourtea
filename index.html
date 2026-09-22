@@ -4215,6 +4215,96 @@
         </div>
 
 
+        ${
+          String(
+            menu.topping || ""
+          ).trim().toUpperCase() === "YA"
+            ? `
+              <div
+                id="detailMenuTopping"
+                style="
+                  margin-top:16px;
+                "
+              >
+
+                <button
+                  type="button"
+                  id="btnTambahTopping"
+                  onclick="bukaToppingDetail()"
+                  style="
+                    width:100%;
+                    min-height:44px;
+                    border:2px solid #7ab82b;
+                    border-radius:14px;
+                    background:#ffffff;
+                    color:#5d8c20;
+                    font-size:13px;
+                    font-weight:900;
+                    cursor:pointer;
+                  "
+                >
+                  ＋ TAMBAH TOPPING
+                </button>
+
+
+                <div
+                  id="detailMenuToppingPanel"
+                  style="
+                    display:none;
+                    margin-top:10px;
+                    padding:14px;
+                    border:1px solid #e1e8d5;
+                    border-radius:14px;
+                    background:#f9fcf5;
+                  "
+                >
+
+                  <div
+                    style="
+                      font-size:13px;
+                      font-weight:900;
+                      color:#40551d;
+                      margin-bottom:10px;
+                    "
+                  >
+                    PILIH TOPPING
+                  </div>
+
+
+                  <div
+                    class="detail-menu-topping-list"
+                  >
+                    Memuat topping...
+                  </div>
+
+
+                  <button
+                    type="button"
+                    onclick="tutupToppingDetail()"
+                    style="
+                      width:100%;
+                      height:40px;
+                      margin-top:12px;
+                      border:none;
+                      border-radius:12px;
+                      background:#159447;
+                      color:#ffffff;
+                      font-size:12px;
+                      font-weight:900;
+                      cursor:pointer;
+                    "
+                  >
+                    SELESAI
+                  </button>
+
+                </div>
+
+              </div>
+            `
+            : ""
+        }
+
+
         <div class="detail-menu-qty">
 
           <div class="detail-menu-qty-title">
@@ -4374,6 +4464,52 @@
       }
 
     }
+
+    function bukaToppingDetail() {
+
+      const panel =
+        document.getElementById(
+          "detailMenuToppingPanel"
+        );
+
+
+      if (!panel) {
+
+        return;
+
+      }
+
+
+      panel.style.display =
+        "block";
+
+
+      loadToppingDetail();
+
+    }
+
+
+    function tutupToppingDetail() {
+
+      const panel =
+        document.getElementById(
+          "detailMenuToppingPanel"
+        );
+
+
+      if (!panel) {
+
+        return;
+
+      }
+
+
+      panel.style.display =
+        "none";
+
+    }
+
+
 
     async function loadToppingDetail() {
 
