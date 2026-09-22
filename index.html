@@ -999,7 +999,7 @@
     }
 
     .menu-price {
-      font-size: 13px;
+      font-size: 10px;
       font-weight: 800;
       color: #e87520;
     }
@@ -3892,6 +3892,8 @@
 
     let editKeranjangIndex = null;
 
+    let variasiMenuAktif = null;
+
 
     async function bukaDetailMenu(
       idMenu,
@@ -3929,6 +3931,15 @@
       editKeranjangIndex =
         indexEdit;
 
+
+      const daftarVariasi =
+        Array.isArray(
+          menu.variasi_menu
+        )
+          ? menu.variasi_menu
+          : [];
+
+
       if (
         editKeranjangIndex !== null &&
         keranjang[editKeranjangIndex]
@@ -3964,6 +3975,28 @@
             }
           );
 
+
+        const variasiTersimpan =
+          daftarVariasi.find(
+            function(variasi) {
+
+              return String(
+                variasi.id_variasi
+              ) === String(
+                keranjang[
+                  editKeranjangIndex
+                ].id_variasi
+              );
+
+            }
+          );
+
+
+        variasiMenuAktif =
+          variasiTersimpan ||
+          daftarVariasi[0] ||
+          null;
+
       } else {
 
         qtyDetailMenu =
@@ -3972,19 +4005,11 @@
         toppingDetailMenu =
           [];
 
+        variasiMenuAktif =
+          daftarVariasi[0] ||
+          null;
+
       }
-
-
-      const harga =
-        Number(
-          String(
-            menu.harga
-          )
-            .replace(
-              /[^\d]/g,
-              ""
-            )
-        );
 
 
       const gambar =
@@ -3992,10 +4017,12 @@
         "BELUM ADA GAMBAR.png";
 
 
-      const variasi =
-        String(
-          menu.variasi_ukuran || ""
-        ).trim();
+      const harga =
+        variasiMenuAktif
+          ? Number(
+              variasiMenuAktif.harga || 0
+            )
+          : 0;
 
 
       const detailContent =
@@ -4019,33 +4046,72 @@
         </div>
 
 
-        <div class="detail-menu-price">
-          Rp${harga.toLocaleString("id-ID")}
-        </div>
-
-
         ${
-          variasi === "Tersedia tambah topping"
+          daftarVariasi.length > 0
             ? `
-              <div class="detail-menu-rule">
-                ✨ Menu ini bisa ditambahkan topping.
-              </div>
-
               <div
-                id="detailMenuTopping"
-                class="detail-menu-topping"
+                class="detail-menu-rule"
+                style="margin-top:16px;"
               >
-                <div class="detail-menu-topping-title">
-                  Tambah Topping
-                </div>
-
-                <div class="detail-menu-topping-list">
-                  Memuat topping...
-                </div>
+                Pilih Variasi
               </div>
+
+              <select
+                id="detailMenuVariasi"
+                onchange="pilihVariasiDetail(this.value)"
+                style="
+                  width:100%;
+                  margin-top:8px;
+                  padding:12px 14px;
+                  border:1px solid #dcebb7;
+                  border-radius:12px;
+                  background:#ffffff;
+                  color:#40551d;
+                  font-size:14px;
+                  font-weight:700;
+                  outline:none;
+                "
+              >
+
+                ${daftarVariasi
+                  .map(
+                    function(variasi) {
+
+                      return `
+                        <option
+                          value="${escapeHTML(variasi.id_variasi)}"
+                          ${
+                            variasiMenuAktif &&
+                            String(
+                              variasi.id_variasi
+                            ) === String(
+                              variasiMenuAktif.id_variasi
+                            )
+                              ? "selected"
+                              : ""
+                          }
+                        >
+                          ${escapeHTML(variasi.nama_variasi)}
+                        </option>
+                      `;
+
+                    }
+                  )
+                  .join("")
+                }
+
+              </select>
             `
             : ""
         }
+
+
+        <div
+          class="detail-menu-price"
+          id="detailMenuPrice"
+        >
+          Rp${harga.toLocaleString("id-ID")}
+        </div>
 
 
         <div class="detail-menu-qty">
@@ -4070,7 +4136,7 @@
               class="detail-menu-qty-value"
               id="detailMenuQty"
             >
-              1
+              ${qtyDetailMenu}
             </div>
 
 
@@ -4110,16 +4176,68 @@
           "show"
         );
 
+    }
+
+
+    function pilihVariasiDetail(
+      idVariasi
+    ) {
 
       if (
-        variasi === "Tersedia tambah topping"
+        !menuDetailAktif ||
+        !Array.isArray(
+          menuDetailAktif.variasi_menu
+        )
       ) {
 
-        await loadToppingDetail();
+        return;
+
+      }
+
+
+      variasiMenuAktif =
+        menuDetailAktif.variasi_menu.find(
+          function(variasi) {
+
+            return String(
+              variasi.id_variasi
+            ) === String(
+              idVariasi
+            );
+
+          }
+        ) || null;
+
+
+      const harga =
+        variasiMenuAktif
+          ? Number(
+              variasiMenuAktif.harga || 0
+            )
+          : 0;
+
+
+      const hargaElement =
+        document.getElementById(
+          "detailMenuPrice"
+        );
+
+
+      if (
+        hargaElement
+      ) {
+
+        hargaElement.textContent =
+          "Rp" +
+          harga.toLocaleString(
+            "id-ID"
+          );
 
       }
 
     }
+
+
 
 
     async function loadToppingDetail() {
@@ -4408,15 +4526,11 @@
 
 
       const hargaMenu =
-        Number(
-          String(
-            menuDetailAktif.harga || 0
-          )
-            .replace(
-              /[^\d]/g,
-              ""
+        variasiMenuAktif
+          ? Number(
+              variasiMenuAktif.harga || 0
             )
-        );
+          : 0;
 
 
       const totalTopping =
@@ -4449,6 +4563,25 @@
           editKeranjangIndex
         ].topping =
           [...toppingDetailMenu];
+
+        keranjang[
+          editKeranjangIndex
+        ].id_variasi =
+          variasiMenuAktif
+            ? variasiMenuAktif.id_variasi
+            : "";
+
+        keranjang[
+          editKeranjangIndex
+        ].nama_variasi =
+          variasiMenuAktif
+            ? variasiMenuAktif.nama_variasi
+            : "";
+
+        keranjang[
+          editKeranjangIndex
+        ].harga_menu =
+          hargaMenu;
 
         keranjang[
           editKeranjangIndex
@@ -4499,6 +4632,16 @@
         gambar:
           menuDetailAktif.gambar ||
           "BELUM ADA GAMBAR.png",
+
+        id_variasi:
+          variasiMenuAktif
+            ? variasiMenuAktif.id_variasi
+            : "",
+
+        nama_variasi:
+          variasiMenuAktif
+            ? variasiMenuAktif.nama_variasi
+            : "",
 
         harga_menu:
           hargaMenu,
