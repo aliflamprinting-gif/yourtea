@@ -1165,6 +1165,20 @@
       box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.18);
     }
 
+    .detail-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e6ebdf;
+    }
+
+    .detail-menu-header-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #40551d;
+    }
+
     .detail-menu-close {
       width: 34px;
       height: 34px;
@@ -1174,9 +1188,11 @@
       justify-content: center;
       border: none;
       border-radius: 50%;
-      background: #f3f5f1;
-      color: #4d5b46;
-      font-size: 22px;
+      background: #e74c3c;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1;
       cursor: pointer;
     }
 
@@ -4031,7 +4047,25 @@
         );
 
 
-      detailContent.innerHTML = `
+        detailContent.innerHTML = `
+
+        <div class="detail-menu-header">
+
+          <div class="detail-menu-header-title">
+            DETAIL MENU
+          </div>
+
+          <button
+            type="button"
+            class="detail-menu-close"
+            onclick="tutupDetailMenu()"
+            aria-label="Tutup"
+          >
+            ×
+          </button>
+
+        </div>
+
 
         <img
           src="${escapeHTML(gambar)}"
@@ -4056,20 +4090,14 @@
                 Pilih Variasi
               </div>
 
-              <select
-                id="detailMenuVariasi"
-                onchange="pilihVariasiDetail(this.value)"
+
+              <div
+                class="detail-menu-variasi-list"
                 style="
-                  width:100%;
+                  display:flex;
+                  flex-direction:column;
+                  gap:10px;
                   margin-top:8px;
-                  padding:12px 14px;
-                  border:1px solid #dcebb7;
-                  border-radius:12px;
-                  background:#ffffff;
-                  color:#40551d;
-                  font-size:14px;
-                  font-weight:700;
-                  outline:none;
                 "
               >
 
@@ -4077,22 +4105,76 @@
                   .map(
                     function(variasi) {
 
+                      const aktif =
+                        variasiMenuAktif &&
+                        String(
+                          variasi.id_variasi
+                        ) === String(
+                          variasiMenuAktif.id_variasi
+                        );
+
                       return `
-                        <option
-                          value="${escapeHTML(variasi.id_variasi)}"
-                          ${
-                            variasiMenuAktif &&
-                            String(
-                              variasi.id_variasi
-                            ) === String(
-                              variasiMenuAktif.id_variasi
-                            )
-                              ? "selected"
+                        <div
+                          class="detail-menu-variasi-card ${
+                            aktif
+                              ? "aktif"
                               : ""
-                          }
+                          }"
+                          onclick="pilihVariasiDetail('${escapeJS(variasi.id_variasi)}')"
+                          style="
+                            padding:14px 16px;
+                            border:2px solid ${
+                              aktif
+                                ? "#7ab82b"
+                                : "#e1e8d5"
+                            };
+                            border-radius:14px;
+                            background:${
+                              aktif
+                                ? "#f3f9e9"
+                                : "#ffffff"
+                            };
+                            cursor:pointer;
+                            transition:all .2s ease;
+                          "
                         >
-                          ${escapeHTML(variasi.nama_variasi)}
-                        </option>
+
+                          <div
+                            style="
+                              display:flex;
+                              align-items:center;
+                              justify-content:space-between;
+                              gap:12px;
+                            "
+                          >
+
+                            <div
+                              style="
+                                font-size:14px;
+                                font-weight:800;
+                                color:#40551d;
+                              "
+                            >
+                              ${escapeHTML(variasi.nama_variasi)}
+                            </div>
+
+
+                            <div
+                              style="
+                                font-size:14px;
+                                font-weight:800;
+                                color:#6a9825;
+                                white-space:nowrap;
+                              "
+                            >
+                              Rp${Number(
+                                variasi.harga || 0
+                              ).toLocaleString("id-ID")}
+                            </div>
+
+                          </div>
+
+                        </div>
                       `;
 
                     }
@@ -4100,7 +4182,7 @@
                   .join("")
                 }
 
-              </select>
+              </div>
             `
             : ""
         }
