@@ -3610,16 +3610,133 @@
                   "BELUM ADA GAMBAR.png";
 
 
-                const harga =
-                  Number(
-                    String(
-                      menu.harga
+                const variasiMenu =
+                  Array.isArray(
+                    menu.variasi_menu
+                  )
+                    ? menu.variasi_menu
+                    : [];
+
+
+                const hargaVariasi =
+                  variasiMenu
+                    .map(
+                      function(variasi) {
+
+                        return Number(
+                          variasi.harga || 0
+                        );
+
+                      }
                     )
-                      .replace(
-                        /[^\d]/g,
-                        ""
+                    .filter(
+                      function(harga) {
+
+                        return harga > 0;
+
+                      }
+                    );
+
+
+                const hargaTerendah =
+                  hargaVariasi.length > 0
+                    ? Math.min(
+                        ...hargaVariasi
                       )
-                  );
+                    : 0;
+
+
+                const hargaTertinggi =
+                  hargaVariasi.length > 0
+                    ? Math.max(
+                        ...hargaVariasi
+                      )
+                    : 0;
+
+
+                const namaVariasi =
+                  variasiMenu
+                    .map(
+                      function(variasi) {
+
+                        return String(
+                          variasi.nama_variasi || ""
+                        ).trim();
+
+                      }
+                    )
+                    .filter(
+                      function(nama) {
+
+                        return (
+                          nama !== "" &&
+                          nama !== "-"
+                        );
+
+                      }
+                    );
+
+
+                let teksVariasi = "";
+
+
+                if (
+                  namaVariasi.length > 0
+                ) {
+
+                  teksVariasi =
+                    namaVariasi.join(
+                      " / "
+                    );
+
+                }
+
+
+                let teksHarga = "";
+
+
+                if (
+                  hargaVariasi.length === 1
+                ) {
+
+                  teksHarga =
+                    "Rp" +
+                    hargaTerendah.toLocaleString(
+                      "id-ID"
+                    );
+
+                } else if (
+                  hargaTerendah ===
+                  hargaTertinggi &&
+                  hargaTerendah > 0
+                ) {
+
+                  teksHarga =
+                    "Rp" +
+                    hargaTerendah.toLocaleString(
+                      "id-ID"
+                    );
+
+                } else if (
+                  hargaTerendah > 0
+                ) {
+
+                  teksHarga =
+                    "Rp" +
+                    hargaTerendah.toLocaleString(
+                      "id-ID"
+                    ) +
+                    " - Rp" +
+                    hargaTertinggi.toLocaleString(
+                      "id-ID"
+                    );
+
+                } else {
+
+                  teksHarga =
+                    "Harga belum tersedia";
+
+                }
 
 
                 card.innerHTML = `
@@ -3642,18 +3759,21 @@
 
                   </div>
 
+
                   <div class="menu-info">
 
                     <div class="menu-name">
                       ${escapeHTML(menu.nama_menu)}
                     </div>
 
+
                     <div class="menu-size">
-                      ${escapeHTML(menu.variasi_ukuran || "")}
+                      ${escapeHTML(teksVariasi)}
                     </div>
 
+
                     <div class="menu-price">
-                      Rp${harga.toLocaleString("id-ID")}
+                      ${teksHarga}
                     </div>
 
                   </div>
@@ -3691,7 +3811,6 @@
       );
 
     }
-
     
     /* BUKA BERANDA */
 
