@@ -2961,7 +2961,42 @@
         </div>
       `;
 
+
       try {
+
+        const responseTopping =
+          await fetch(
+            API_URL + "?action=getTopping"
+          );
+
+
+        if (!responseTopping.ok) {
+
+          throw new Error(
+            "Gagal menghubungi API topping."
+          );
+
+        }
+
+
+        const resultTopping =
+          await responseTopping.json();
+
+
+        if (
+          resultTopping.status !== "success" ||
+          !Array.isArray(resultTopping.data)
+        ) {
+
+          throw new Error(
+            "Data topping tidak valid."
+          );
+
+        }
+
+
+        semuaTopping =
+          resultTopping.data;
 
         const responseMenu =
           await fetch(
@@ -3076,6 +3111,8 @@
     /* DATA MENU SAAT INI */
 
     let semuaMenu = [];
+
+    let semuaTopping = [];
 
     let jenisAktif = "SEMUA";
 
@@ -4353,6 +4390,18 @@
         );
 
 
+      if (
+        editKeranjangIndex !== null &&
+        String(
+          menu.topping || ""
+        ).trim().toUpperCase() === "YA"
+      ) {
+
+        bukaToppingDetail();
+
+      }
+
+
       kunciScrollPopup(
         true
       );
@@ -4471,8 +4520,7 @@
     }
 
 
-
-    async function loadToppingDetail() {
+    function loadToppingDetail() {
 
       const toppingContainer =
         document.querySelector(
@@ -4487,146 +4535,94 @@
       }
 
 
-      toppingContainer.innerHTML = `
-        <div class="menu-loading">
-          Memuat topping...
-        </div>
-      `;
-
-
-      try {
-
-        const response =
-          await fetch(
-            API_URL + "?action=getTopping"
-          );
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            "Gagal menghubungi API topping."
-          );
-
-        }
-
-
-        const result =
-          await response.json();
-
-
-        if (
-          result.status !== "success" ||
-          !Array.isArray(result.data)
-        ) {
-
-          throw new Error(
-            "Data topping tidak valid."
-          );
-
-        }
-
-
-        if (
-          result.data.length === 0
-        ) {
-
-          toppingContainer.innerHTML = `
-            <div class="menu-error">
-              Belum ada topping yang tersedia.
-            </div>
-          `;
-
-          return;
-
-        }
-
-
-        toppingContainer.innerHTML = "";
-
-
-        result.data.forEach(
-          function(topping) {
-
-            const hargaTopping =
-              Number(
-                String(
-                  topping.harga || 0
-                )
-                  .replace(
-                    /[^\d]/g,
-                    ""
-                  )
-              );
-
-
-            const item =
-              document.createElement(
-                "label"
-              );
-
-
-            item.className =
-              "detail-menu-topping-item";
-
-
-            const toppingTerpilih =
-              toppingDetailMenu.some(
-                function(itemTopping) {
-
-                  return String(
-                    itemTopping.id_topping
-                  ) === String(
-                    topping.id_topping
-                  );
-
-                }
-              );
-
-
-            item.innerHTML = `
-
-              <input
-                type="checkbox"
-                value="${escapeHTML(topping.id_topping)}"
-                ${toppingTerpilih ? "checked" : ""}
-                onchange="pilihToppingDetail('${escapeJS(topping.id_topping)}', '${escapeJS(topping.nama_topping)}', ${hargaTopping}, this.checked)"
-              >
-
-              <span class="detail-menu-topping-text">
-                <span class="detail-menu-topping-name">
-                  ${escapeHTML(topping.nama_topping)}
-                </span>
-
-                <span class="detail-menu-topping-price">
-                  +Rp${hargaTopping.toLocaleString("id-ID")}
-                </span>
-              </span>
-
-            `;
-
-
-            toppingContainer.appendChild(
-              item
-            );
-
-          }
-        );
-
-
-      } catch (error) {
-
-        console.error(error);
+      if (
+        !Array.isArray(
+          semuaTopping
+        ) ||
+        semuaTopping.length === 0
+      ) {
 
         toppingContainer.innerHTML = `
           <div class="menu-error">
-            Gagal memuat topping.
-            <br>
-            Silakan coba lagi.
+            Belum ada topping yang tersedia.
           </div>
         `;
 
+        return;
+
       }
+
+
+      toppingContainer.innerHTML = "";
+
+
+      semuaTopping.forEach(
+        function(topping) {
+
+          const hargaTopping =
+            Number(
+              String(
+                topping.harga || 0
+              )
+                .replace(
+                  /[^\d]/g,
+                  ""
+                )
+            );
+
+
+          const item =
+            document.createElement(
+              "label"
+            );
+
+
+          item.className =
+            "detail-menu-topping-item";
+
+
+          const toppingTerpilih =
+            toppingDetailMenu.some(
+              function(itemTopping) {
+
+                return String(
+                  itemTopping.id_topping
+                ) === String(
+                  topping.id_topping
+                );
+
+              }
+            );
+
+
+          item.innerHTML = `
+
+            <input
+              type="checkbox"
+              value="${escapeHTML(topping.id_topping)}"
+              ${toppingTerpilih ? "checked" : ""}
+              onchange="pilihToppingDetail('${escapeJS(topping.id_topping)}', '${escapeJS(topping.nama_topping)}', ${hargaTopping}, this.checked)"
+            >
+
+            <span class="detail-menu-topping-text">
+              <span class="detail-menu-topping-name">
+                ${escapeHTML(topping.nama_topping)}
+              </span>
+
+              <span class="detail-menu-topping-price">
+                +Rp${hargaTopping.toLocaleString("id-ID")}
+              </span>
+            </span>
+
+          `;
+
+
+          toppingContainer.appendChild(
+            item
+          );
+
+        }
+      );
 
     }
 
@@ -5222,6 +5218,18 @@
       overlay.classList.add(
         "show"
       );
+
+
+      if (
+        editKeranjangIndex !== null &&
+        String(
+          menu.topping || ""
+        ).trim().toUpperCase() === "YA"
+      ) {
+
+        bukaToppingDetail();
+
+      }
 
 
       kunciScrollPopup(
