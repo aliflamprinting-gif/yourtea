@@ -4327,6 +4327,7 @@
         <button
           type="button"
           class="detail-menu-add"
+          id="detailMenuAddButton"
           onclick="tambahDetailKeKeranjang()"
         >
           ${
@@ -4334,6 +4335,10 @@
               ? "SIMPAN PERUBAHAN"
               : "TAMBAH KE KERANJANG"
           }
+          (Rp${(
+            harga *
+            qtyDetailMenu
+          ).toLocaleString("id-ID")})
         </button>
 
       `;
@@ -4708,9 +4713,14 @@
         );
 
 
-      const totalHarga =
+      const hargaSatuan =
         hargaMenu +
         hargaTopping;
+
+
+      const totalHarga =
+        hargaSatuan *
+        qtyDetailMenu;
 
 
       const hargaElement =
@@ -4725,14 +4735,40 @@
 
         hargaElement.textContent =
           "Rp" +
-          totalHarga.toLocaleString(
+          hargaSatuan.toLocaleString(
             "id-ID"
           );
 
       }
 
-    }
 
+      const tombolTambah =
+        document.getElementById(
+          "detailMenuAddButton"
+        );
+
+
+      if (
+        tombolTambah
+      ) {
+
+        const teksTombol =
+          editKeranjangIndex !== null
+            ? "SIMPAN PERUBAHAN"
+            : "TAMBAH KE KERANJANG";
+
+
+        tombolTambah.textContent =
+          teksTombol +
+          " (Rp" +
+          totalHarga.toLocaleString(
+            "id-ID"
+          ) +
+          ")";
+
+      }
+
+    }
 
 
 
@@ -4768,6 +4804,9 @@
           qtyDetailMenu;
 
       }
+
+
+      updateHargaDetailMenu();
 
     }
 
