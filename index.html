@@ -2680,10 +2680,148 @@
         font-size: 21px;
       }
     }
+
+    /* ================================
+      PASSWORD PROTECTION
+    ================================ */
+
+    #passwordScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: linear-gradient(
+        180deg,
+        #8bcf55 0%,
+        #d9ef5b 45%,
+        #fff36a 100%
+      );
+    }
+
+    .password-box {
+      width: 100%;
+      max-width: 360px;
+      padding: 30px 24px;
+      background: #fffef1;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+
+    .password-logo {
+      width: 125px;
+      max-width: 70%;
+      margin-bottom: 20px;
+    }
+
+    .password-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #40551d;
+      margin-bottom: 8px;
+    }
+
+    .password-text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #687653;
+      margin-bottom: 18px;
+    }
+
+    .password-input {
+      width: 100%;
+      height: 46px;
+      border: 1px solid #dcebb7;
+      border-radius: 13px;
+      padding: 0 14px;
+      background: #ffffff;
+      color: #263522;
+      font-size: 14px;
+      text-align: center;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .password-input:focus {
+      border-color: #76b84b;
+    }
+
+    .password-button {
+      width: 100%;
+      border: none;
+      border-radius: 13px;
+      padding: 14px;
+      background: #159447;
+      color: white;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .password-error {
+      min-height: 18px;
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #e53935;
+    }
+
+
   </style>
 </head>
 
 <body>
+
+  <!-- ================================
+       PASSWORD PROTECTION
+  ================================= -->
+
+  <div id="passwordScreen">
+
+    <div class="password-box">
+
+      <img
+        src="yourtea-logo.png.png"
+        alt="YourTea"
+        class="password-logo"
+      >
+
+      <div class="password-title">
+        🔒 Website Private
+      </div>
+
+      <div class="password-text">
+        Website ini sedang dalam tahap preview.
+        Silakan masukkan password untuk melanjutkan.
+      </div>
+
+      <input
+        type="password"
+        id="passwordInput"
+        class="password-input"
+        placeholder="Masukkan password"
+        autocomplete="off"
+      >
+
+      <button
+        class="password-button"
+        onclick="cekPassword()"
+      >
+        MASUK
+      </button>
+
+      <div
+        id="passwordError"
+        class="password-error"
+      ></div>
+
+    </div>
+
+  </div>
+
 
   <main class="page">
 
@@ -8950,6 +9088,118 @@ function pesanLagi(
         .replace(/'/g, "\\'");
 
     }
+
+
+    /* =================================
+       PASSWORD PROTECTION
+    ================================= */
+
+    const PASSWORD_WEBSITE = "Yourtea2026";
+
+
+    function cekPassword() {
+
+      const input =
+        document.getElementById(
+          "passwordInput"
+        );
+
+      const error =
+        document.getElementById(
+          "passwordError"
+        );
+
+      const password =
+        input.value.trim();
+
+
+      if (
+        password === PASSWORD_WEBSITE
+      ) {
+
+        sessionStorage.setItem(
+          "yourtea_access",
+          "true"
+        );
+
+        document
+          .getElementById(
+            "passwordScreen"
+          )
+          .style.display = "none";
+
+        document.body.style.overflow = "";
+
+      } else {
+
+        error.textContent =
+          "❌ Password salah.";
+
+        input.value = "";
+
+        input.focus();
+
+      }
+
+    }
+
+
+    /* ENTER = MASUK */
+
+    document
+      .getElementById("passwordInput")
+      .addEventListener(
+        "keydown",
+        function(event) {
+
+          if (
+            event.key === "Enter"
+          ) {
+
+            cekPassword();
+
+          }
+
+        }
+      );
+
+
+    /* CEK AKSES SAAT HALAMAN DIBUKA */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const sudahMasuk =
+          sessionStorage.getItem(
+            "yourtea_access"
+          );
+
+        if (
+          sudahMasuk === "true"
+        ) {
+
+          document
+            .getElementById(
+              "passwordScreen"
+            )
+            .style.display = "none";
+
+        } else {
+
+          document.body.style.overflow =
+            "hidden";
+
+          document
+            .getElementById(
+              "passwordInput"
+            )
+            .focus();
+
+        }
+
+      }
+    );
 
   </script>
 
