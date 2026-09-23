@@ -43,7 +43,7 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     .content {
@@ -1276,6 +1276,15 @@
       color: #159447;
     }
 
+    .pesanan-status.kadaluarsa {
+      background: #fde8e8;
+      color: #e53935;
+    }
+
+    .pesanan-order-again.kadaluarsa {
+      background: #e53935;
+    }
+
     /* HALAMAN TUNJUKKAN KE KASIR */
 
     .kasir-page {
@@ -1284,7 +1293,7 @@
       max-width: 520px;
       min-height: 100vh;
       margin: 0 auto;
-      padding: 0 16px 40px;
+      padding: 0 16px;
       background: #ffffff;
       color: #1f2d17;
     }
@@ -1314,12 +1323,12 @@
     }
 
     .kasir-content {
-      min-height: calc(100vh - 90px);
+      min-height: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 35px 20px 50px;
+      justify-content: flex-start;
+      padding: 12px 20px 0;
       text-align: center;
     }
 
@@ -1383,7 +1392,7 @@
 
 
     .kasir-order-item {
-      padding: 13px 14px;
+      padding: 11px 14px;
       border-bottom: 1px solid #e5ebe1;
     }
 
@@ -1393,19 +1402,53 @@
     }
 
 
+    .kasir-order-item-main {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+
+    .kasir-order-item-left {
+      flex: 1;
+      min-width: 0;
+    }
+
+
     .kasir-order-item-name {
       font-size: 14px;
-      line-height: 1.4;
+      line-height: 1.3;
       font-weight: 900;
       color: #263522;
     }
 
 
-    .kasir-order-item-info {
+    .kasir-order-item-variation {
+      margin-top: 3px;
+      font-size: 14px;
+      line-height: 1.3;
+      font-weight: 900;
+      color: #e53935;
+    }
+
+
+    .kasir-order-item-topping {
       margin-top: 4px;
-      font-size: 12px;
-      line-height: 1.5;
+      font-size: 11px;
+      line-height: 1.4;
       color: #7b8575;
+    }
+
+
+    .kasir-order-item-qty {
+      flex-shrink: 0;
+      padding-top: 1px;
+      font-size: 14px;
+      line-height: 1.3;
+      font-weight: 900;
+      color: #263522;
+      white-space: nowrap;
     }
 
 
@@ -5543,7 +5586,7 @@ function renderPesananSaya() {
                         : `
                           <button
                             type="button"
-                            class="pesanan-order-again"
+                            class="pesanan-order-again kadaluarsa"
                             onclick="pesanLagi(${index})"
                           >
                             PESAN LAGI
@@ -8497,39 +8540,56 @@ function pesanLagi(
                   : "";
 
 
-              const infoItem =
-                [
-                  variasi,
-                  "Qty " +
-                    Number(
-                      item.qty || 0
-                    ),
-                  topping
-                ]
-                  .filter(
-                    function(value) {
-                      return value;
-                    }
-                  )
-                  .join(" • ");
-
-
               return `
 
                 <div class="kasir-order-item">
 
-                  <div class="kasir-order-item-name">
-                    ${escapeHTML(
-                      item.nama_menu ||
-                      ""
-                    )}
-                  </div>
+                  <div class="kasir-order-item-main">
+
+                    <div class="kasir-order-item-left">
+
+                      <div class="kasir-order-item-name">
+                        ${escapeHTML(
+                          item.nama_menu ||
+                          ""
+                        )}
+                      </div>
 
 
-                  <div class="kasir-order-item-info">
-                    ${escapeHTML(
-                      infoItem
-                    )}
+                      ${
+                        variasi
+                          ? `
+                            <div class="kasir-order-item-variation">
+                              ${escapeHTML(
+                                variasi
+                              )}
+                            </div>
+                          `
+                          : ""
+                      }
+
+
+                      ${
+                        topping
+                          ? `
+                            <div class="kasir-order-item-topping">
+                              ${escapeHTML(
+                                topping
+                              )}
+                            </div>
+                          `
+                          : ""
+                      }
+
+                    </div>
+
+
+                    <div class="kasir-order-item-qty">
+                      x ${Number(
+                        item.qty || 0
+                      )}
+                    </div>
+
                   </div>
 
                 </div>
@@ -8548,7 +8608,7 @@ function pesanLagi(
 
             <div class="kasir-order-item">
 
-              <div class="kasir-order-item-info">
+              <div class="kasir-order-item-topping">
                 Detail pesanan tidak tersedia.
               </div>
 
