@@ -1591,6 +1591,19 @@
       cursor: pointer;
     }
 
+    .order-status-kasir-button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 13px;
+      border: 1px solid #159447;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #159447;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
 
     .order-loading-spinner {
       width: 20px;
@@ -3347,6 +3360,15 @@
           onclick="tutupStatusPesanan()"
         >
           OKE, SIAP!
+        </button>
+
+
+        <button
+          type="button"
+          class="order-status-kasir-button"
+          onclick="tunjukanKeKasir()"
+        >
+          TUNJUKAN KE KASIR
         </button>
 
       </div>
@@ -7608,6 +7630,27 @@
 
       kunciScrollPopup(
         false
+      );
+
+      bukaPesananSaya();
+
+    }
+
+    function tunjukanKeKasir() {
+
+      const statusCode =
+        document.getElementById(
+          "orderStatusCode"
+        );
+
+      const kode =
+        statusCode
+          ? statusCode.textContent
+          : "";
+
+      alert(
+        "Tunjukkan kode pesanan ini kepada kasir:\n\n" +
+        kode
       );
 
     }
