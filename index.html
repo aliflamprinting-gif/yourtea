@@ -788,6 +788,13 @@
       justify-content: center;
     }
 
+    .cart-checkout:disabled {
+      background: #d9ddd7;
+      color: #8b9288;
+      cursor: not-allowed;
+      opacity: 1;
+    }
+
     .menu-search {
       width: 100%;
       margin-top: 14px;
@@ -3127,13 +3134,14 @@
           </div>
 
 
-          <button
-            type="button"
-            class="cart-checkout"
-            onclick="mulaiCheckout()"
-          >
-            LANJUT KE PEMESANAN
-          </button>
+        <button
+          type="button"
+          class="cart-checkout"
+          onclick="mulaiCheckout()"
+          disabled
+        >
+          LANJUT KE PEMESANAN
+        </button>
 
         </div>
 
@@ -6631,6 +6639,19 @@
           totalHarga.toLocaleString(
             "id-ID"
           );
+
+      }
+
+      const tombolCheckout =
+        document.querySelector(
+          ".cart-checkout"
+        );
+
+
+      if (tombolCheckout) {
+
+        tombolCheckout.disabled =
+          keranjang.length === 0;
 
       }
 
