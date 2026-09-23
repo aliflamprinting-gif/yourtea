@@ -2688,7 +2688,7 @@
             </div>
 
             <div class="checkout-header-subtitle">
-              Lengkapi data pesanan kamu
+              Periksa kembali pesanan kamu
             </div>
 
           </div>
@@ -2705,22 +2705,6 @@
 
 
         <div class="checkout-content">
-
-          <div class="checkout-field">
-
-            <div class="checkout-label">
-              Nama Pemesan
-            </div>
-
-            <input
-              type="text"
-              id="checkoutNama"
-              class="checkout-input"
-              placeholder="Masukkan nama kamu"
-            >
-
-          </div>
-
 
           <div class="checkout-field">
 
@@ -2797,6 +2781,62 @@
       </div>
 
     </div>
+
+
+    <!-- POPUP INPUT NAMA -->
+    <div
+      class="checkout-name-overlay"
+      id="checkoutNameOverlay"
+      onclick="tutupInputNama(event)"
+    >
+
+      <div
+        class="checkout-name-box"
+        onclick="event.stopPropagation()"
+      >
+
+        <button
+          type="button"
+          class="checkout-name-close"
+          onclick="tutupInputNama()"
+        >
+          ×
+        </button>
+
+
+        <div class="checkout-name-title">
+          Siapa nama kamu?
+        </div>
+
+
+        <div class="checkout-name-text">
+          Masukkan nama kamu agar pesananmu mudah dikenali.
+        </div>
+
+
+        <input
+          type="text"
+          id="checkoutNama"
+          class="checkout-input"
+          placeholder="Masukkan nama kamu"
+          autocomplete="name"
+        >
+
+
+        <button
+          type="button"
+          class="checkout-submit"
+          onclick="lanjutkanPesanan()"
+        >
+          LANJUTKAN
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- POPUP PILIH JENIS MENU -->
 
 
     <!-- POPUP PILIH JENIS MENU -->
