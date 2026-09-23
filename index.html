@@ -5461,6 +5461,73 @@ function renderPesananSaya() {
     }
 
 
+    function tunjukanPesananKeKasir(
+      index
+    ) {
+
+      const riwayat =
+        JSON.parse(
+          localStorage.getItem(
+            "yourtea_riwayat"
+          ) ||
+          "[]"
+        );
+
+      if (
+        !Array.isArray(riwayat) ||
+        !riwayat[index]
+      ) {
+        return;
+      }
+
+      const order =
+        riwayat[index];
+
+      localStorage.setItem(
+        "YT_ORDER_KASIR",
+        JSON.stringify(
+          order
+        )
+      );
+
+
+      document.getElementById(
+        "pesananPage"
+      ).classList.remove(
+        "show"
+      );
+
+      document.getElementById(
+        "menuPage"
+      ).classList.remove(
+        "show"
+      );
+
+      document.getElementById(
+        "homePage"
+      ).classList.remove(
+        "show"
+      );
+
+      document.getElementById(
+        "kasirPage"
+      ).classList.add(
+        "show"
+      );
+
+
+      renderHalamanKasir();
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+    }
+
+
+
+
 function pesanLagi(
       index
     ) {
