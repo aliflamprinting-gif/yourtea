@@ -1358,6 +1358,83 @@
       color: #7b8575;
     }
 
+    .kasir-order-section {
+      width: 100%;
+      margin-top: 26px;
+      text-align: left;
+    }
+
+
+    .kasir-order-section-title {
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #202d1b;
+    }
+
+
+    .kasir-order-list {
+      width: 100%;
+      border: 1px solid #e5ebe1;
+      border-radius: 16px;
+      background: #fafcf9;
+      overflow: hidden;
+    }
+
+
+    .kasir-order-item {
+      padding: 13px 14px;
+      border-bottom: 1px solid #e5ebe1;
+    }
+
+
+    .kasir-order-item:last-child {
+      border-bottom: none;
+    }
+
+
+    .kasir-order-item-name {
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 900;
+      color: #263522;
+    }
+
+
+    .kasir-order-item-info {
+      margin-top: 4px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #7b8575;
+    }
+
+
+    .kasir-order-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #f3f9e9;
+      border: 1px solid #dcebb7;
+    }
+
+
+    .kasir-order-total-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: #7b8575;
+    }
+
+
+    .kasir-order-total-value {
+      font-size: 19px;
+      font-weight: 900;
+      color: #159447;
+    }
+
     .kasir-detail-button {
       width: 100%;
       margin-top: 28px;
@@ -3339,17 +3416,40 @@
           class="kasir-info"
           id="kasirInfoOrder"
         >
-          Tunjukkan kode pesanan ini kepada kasir.
+          -
         </div>
 
 
-        <button
-          type="button"
-          class="kasir-detail-button"
-          onclick="bukaRincianPesananKasir()"
-        >
-          RINCIAN PESANAN
-        </button>
+        <div class="kasir-order-section">
+
+          <div class="kasir-order-section-title">
+            RINCIAN PESANAN
+          </div>
+
+
+          <div
+            class="kasir-order-list"
+            id="kasirOrderList"
+          >
+          </div>
+
+
+          <div class="kasir-order-total">
+
+            <div class="kasir-order-total-label">
+              TOTAL
+            </div>
+
+            <div
+              class="kasir-order-total-value"
+              id="kasirOrderTotal"
+            >
+              Rp0
+            </div>
+
+          </div>
+
+        </div>
 
 
         <button
@@ -8155,6 +8255,21 @@ function pesanLagi(
       }
 
 
+      const cartOverlay =
+        document.getElementById(
+          "cartOverlay"
+        );
+
+
+      if (cartOverlay) {
+
+        cartOverlay.classList.remove(
+          "show"
+        );
+
+      }
+
+
       kunciScrollPopup(
         false
       );
@@ -8216,6 +8331,21 @@ function pesanLagi(
         "show"
       );
 
+      
+      const cartOverlay =
+        document.getElementById(
+          "cartOverlay"
+        );
+
+
+      if (cartOverlay) {
+
+        cartOverlay.classList.remove(
+          "show"
+        );
+
+      }
+
 
       kunciScrollPopup(
         false
@@ -8276,19 +8406,35 @@ function pesanLagi(
           "null"
         );
 
+
       if (!order) {
         return;
       }
+
 
       const kode =
         document.getElementById(
           "kasirKodeOrder"
         );
 
+
       const info =
         document.getElementById(
           "kasirInfoOrder"
         );
+
+
+      const list =
+        document.getElementById(
+          "kasirOrderList"
+        );
+
+
+      const total =
+        document.getElementById(
+          "kasirOrderTotal"
+        );
+
 
       if (kode) {
 
@@ -8297,6 +8443,7 @@ function pesanLagi(
           "-";
 
       }
+
 
       if (info) {
 
@@ -8309,6 +8456,119 @@ function pesanLagi(
           (
             order.nama_pelanggan ||
             "-"
+          );
+
+      }
+
+
+      const items =
+        Array.isArray(
+          order.items
+        )
+          ? order.items
+          : [];
+
+
+      if (list) {
+
+        list.innerHTML =
+          items.map(
+            function(item) {
+
+              const variasi =
+                item.nama_variasi
+                  ? item.nama_variasi
+                  : "";
+
+
+              const topping =
+                Array.isArray(
+                  item.topping
+                ) &&
+                item.topping.length > 0
+                  ? "Topping: " +
+                    item.topping
+                      .map(
+                        function(topping) {
+                          return topping.nama_topping;
+                        }
+                      )
+                      .join(", ")
+                  : "";
+
+
+              const infoItem =
+                [
+                  variasi,
+                  "Qty " +
+                    Number(
+                      item.qty || 0
+                    ),
+                  topping
+                ]
+                  .filter(
+                    function(value) {
+                      return value;
+                    }
+                  )
+                  .join(" • ");
+
+
+              return `
+
+                <div class="kasir-order-item">
+
+                  <div class="kasir-order-item-name">
+                    ${escapeHTML(
+                      item.nama_menu ||
+                      ""
+                    )}
+                  </div>
+
+
+                  <div class="kasir-order-item-info">
+                    ${escapeHTML(
+                      infoItem
+                    )}
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          ).join("");
+
+
+        if (
+          items.length === 0
+        ) {
+
+          list.innerHTML = `
+
+            <div class="kasir-order-item">
+
+              <div class="kasir-order-item-info">
+                Detail pesanan tidak tersedia.
+              </div>
+
+            </div>
+
+          `;
+
+        }
+
+      }
+
+
+      if (total) {
+
+        total.textContent =
+          "Rp" +
+          Number(
+            order.total || 0
+          ).toLocaleString(
+            "id-ID"
           );
 
       }
