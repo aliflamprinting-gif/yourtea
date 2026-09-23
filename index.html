@@ -1137,6 +1137,109 @@
     }
 
 
+        .pesanan-list {
+      width: 100%;
+      padding: 20px 0 30px;
+    }
+
+    .pesanan-card {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #e7ebe4;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    .pesanan-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .pesanan-kode {
+      font-size: 14px;
+      font-weight: 900;
+      color: #263522;
+    }
+
+    .pesanan-tanggal {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #8a9385;
+    }
+
+    .pesanan-status {
+      flex-shrink: 0;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eaf5df;
+      color: #159447;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .pesanan-cabang {
+      padding-bottom: 12px;
+      border-bottom: 1px solid #eeeeee;
+      font-size: 13px;
+      font-weight: 700;
+      color: #596453;
+    }
+
+    .pesanan-items {
+      padding: 12px 0;
+    }
+
+    .pesanan-item-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 7px;
+    }
+
+    .pesanan-item-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .pesanan-item-name {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #35402f;
+    }
+
+    .pesanan-item-qty {
+      flex-shrink: 0;
+      font-size: 14px;
+      font-weight: 800;
+      color: #159447;
+    }
+
+    .pesanan-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid #eeeeee;
+    }
+
+    .pesanan-total-label {
+      font-size: 13px;
+      color: #7b8575;
+    }
+
+    .pesanan-total {
+      font-size: 16px;
+      font-weight: 900;
+      color: #159447;
+    }
+
+
         /* POPUP PEMESANAN */
 
     .checkout-overlay {
@@ -4731,19 +4834,17 @@
 
     }
 
-        function bukaPesananSaya() {
+    function bukaPesananSaya() {
 
       document.querySelector(
         ".content"
       ).style.display =
         "none";
 
-
       document.querySelector(
         ".visual-footer"
       ).style.display =
         "none";
-
 
       document.getElementById(
         "homePage"
@@ -4751,13 +4852,11 @@
         "show"
       );
 
-
       document.getElementById(
         "menuPage"
       ).classList.remove(
         "show"
       );
-
 
       document.getElementById(
         "pesananPage"
@@ -4765,6 +4864,7 @@
         "show"
       );
 
+      renderPesananSaya();
 
       window.scrollTo(
         0,
@@ -4773,6 +4873,211 @@
 
     }
 
+    function renderPesananSaya() {
+
+      const content =
+        document.querySelector(
+          ".pesanan-content"
+        );
+
+      if (!content) {
+        return;
+      }
+
+      const riwayat =
+        JSON.parse(
+          localStorage.getItem(
+            "yourtea_riwayat"
+          ) ||
+          "[]"
+        );
+
+      if (
+        !Array.isArray(riwayat) ||
+        riwayat.length === 0
+      ) {
+
+        content.innerHTML = `
+
+          <div class="pesanan-empty">
+
+            <div class="pesanan-empty-icon">
+              📋
+            </div>
+
+            <div class="pesanan-empty-title">
+              Belum Ada Pesanan
+            </div>
+
+            <div class="pesanan-empty-text">
+              Pesanan yang kamu buat akan muncul di sini.
+            </div>
+
+            <button
+              type="button"
+              class="pesanan-empty-button"
+              onclick="bukaMenu()"
+            >
+              LIHAT MENU
+            </button>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+      content.innerHTML = `
+
+        <div class="pesanan-list">
+
+          ${riwayat.map(
+            function(order) {
+
+              const tanggal =
+                new Date(
+                  order.tanggal_order
+                );
+
+              const tanggalText =
+                tanggal.toLocaleDateString(
+                  "id-ID",
+                  {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                  }
+                );
+
+              const waktuText =
+                tanggal.toLocaleTimeString(
+                  "id-ID",
+                  {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                  }
+                );
+
+              const items =
+                Array.isArray(
+                  order.items
+                )
+                  ? order.items
+                  : [];
+
+              const rincianItems =
+                items.map(
+                  function(item) {
+
+                    const variasi =
+                      item.nama_variasi
+                        ? " • " +
+                          item.nama_variasi
+                        : "";
+
+                    return `
+                      <div class="pesanan-item-row">
+
+                        <div class="pesanan-item-name">
+                          ${escapeHTML(
+                            item.nama_menu
+                          )}${escapeHTML(
+                            variasi
+                          )}
+                        </div>
+
+                        <div class="pesanan-item-qty">
+                          x${Number(
+                            item.qty || 0
+                          )}
+                        </div>
+
+                      </div>
+                    `;
+
+                  }
+                ).join("");
+
+              return `
+
+                <div class="pesanan-card">
+
+                  <div class="pesanan-card-top">
+
+                    <div>
+
+                      <div class="pesanan-kode">
+                        ${escapeHTML(
+                          order.kode_order ||
+                          "-"
+                        )}
+                      </div>
+
+                      <div class="pesanan-tanggal">
+                        ${tanggalText}
+                        •
+                        ${waktuText}
+                      </div>
+
+                    </div>
+
+                    <div class="pesanan-status">
+                      ${escapeHTML(
+                        order.status ||
+                        "AKTIF"
+                      )}
+                    </div>
+
+                  </div>
+
+
+                  <div class="pesanan-cabang">
+
+                    ${escapeHTML(
+                      order.nama_cabang ||
+                      "-"
+                    )}
+
+                  </div>
+
+
+                  <div class="pesanan-items">
+
+                    ${rincianItems}
+
+                  </div>
+
+
+                  <div class="pesanan-card-bottom">
+
+                    <div class="pesanan-total-label">
+                      Total
+                    </div>
+
+                    <div class="pesanan-total">
+                      Rp${Number(
+                        order.total || 0
+                      ).toLocaleString(
+                        "id-ID"
+                      )}
+                    </div>
+
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          ).join("")}
+
+        </div>
+
+      `;
+
+    }
 
     
     /* BUKA BERANDA */
