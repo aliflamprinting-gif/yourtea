@@ -6495,6 +6495,356 @@
     }
 
 
+    async function lanjutkanPesanan() {
+
+      const checkoutNama =
+        document.getElementById(
+          "checkoutNama"
+        );
+
+
+      if (!checkoutNama) {
+
+        return;
+
+      }
+
+
+      const nama =
+        checkoutNama.value
+          .trim()
+          .toUpperCase();
+
+
+      if (!nama) {
+
+        alert(
+          "Silakan masukkan nama kamu terlebih dahulu."
+        );
+
+        checkoutNama.focus();
+
+        return;
+
+      }
+
+
+      if (
+        keranjang.length === 0
+      ) {
+
+        alert(
+          "Keranjang masih kosong."
+        );
+
+        return;
+
+      }
+
+
+      const idCabang =
+        localStorage.getItem(
+          "YT_ID_CABANG"
+        );
+
+
+      const namaCabang =
+        localStorage.getItem(
+          "YT_NAMA_CABANG"
+        );
+
+
+      if (!idCabang) {
+
+        alert(
+          "Outlet belum dipilih."
+        );
+
+        return;
+
+      }
+
+
+      const checkoutCatatan =
+        document.getElementById(
+          "checkoutCatatan"
+        );
+
+
+      const catatan =
+        checkoutCatatan
+          ? checkoutCatatan.value.trim()
+          : "";
+
+
+      const total =
+        keranjang.reduce(
+          function(
+            jumlah,
+            item
+          ) {
+
+            return (
+              jumlah +
+              Number(
+                item.total || 0
+              )
+            );
+
+          },
+          0
+        );
+
+
+      const rincianOrder =
+        keranjang
+          .map(
+            function(item) {
+
+              const variasi =
+                item.nama_variasi
+                  ? " - " +
+                    item.nama_variasi
+                  : "";
+
+
+              const topping =
+                Array.isArray(
+                  item.topping
+                ) &&
+                item.topping.length > 0
+                  ? " - TOPPING: " +
+                    item.topping
+                      .map(
+                        function(topping) {
+
+                          return topping.nama_topping;
+
+                        }
+                      )
+                      .join(", ")
+                  : " - TANPA TOPPING";
+
+
+              return (
+                item.nama_menu +
+                variasi +
+                " - QTY " +
+                Number(
+                  item.qty || 0
+                ) +
+                topping +
+                " - Rp" +
+                Number(
+                  item.total || 0
+                ).toLocaleString(
+                  "id-ID"
+                )
+              );
+
+            }
+          )
+          .join(
+            " | "
+          );
+
+
+      const checkoutNameOverlay =
+        document.getElementById(
+          "checkoutNameOverlay"
+        );
+
+
+      const checkoutOverlay =
+        document.getElementById(
+          "checkoutOverlay"
+        );
+
+
+      try {
+
+        const params =
+          new URLSearchParams({
+            action:
+              "simpanOrder",
+
+            nama:
+              nama,
+
+            id_cabang:
+              idCabang,
+
+            rincian_order:
+              rincianOrder,
+
+            catatan:
+              catatan,
+
+            total:
+              String(
+                total
+              )
+
+          });
+
+
+        const response =
+          await fetch(
+            API_URL +
+              "?" +
+              params.toString()
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          result.status !==
+          "success"
+        ) {
+
+          alert(
+            result.message ||
+            "Pesanan gagal disimpan."
+          );
+
+          return;
+
+        }
+
+
+        localStorage.setItem(
+          "YT_NAMA_PELANGGAN",
+          nama
+        );
+
+
+        localStorage.setItem(
+          "YT_CATATAN_ORDER",
+          catatan
+        );
+
+
+        const riwayat =
+          JSON.parse(
+            localStorage.getItem(
+              "yourtea_riwayat"
+            ) ||
+            "[]"
+          );
+
+
+        riwayat.unshift({
+          id_order:
+            result.data.id_order,
+
+          kode_order:
+            result.data.kode_order,
+
+          id_cabang:
+            idCabang,
+
+          nama_cabang:
+            namaCabang,
+
+          tanggal_order:
+            new Date().toISOString(),
+
+          nama_pelanggan:
+            nama,
+
+          rincian_order:
+            rincianOrder,
+
+          catatan:
+            catatan,
+
+          total:
+            total,
+
+          status:
+            "BARU",
+
+          items:
+            JSON.parse(
+              JSON.stringify(
+                keranjang
+              )
+            )
+
+        });
+
+
+        localStorage.setItem(
+          "yourtea_riwayat",
+          JSON.stringify(
+            riwayat
+          )
+        );
+
+
+        if (
+          checkoutNameOverlay
+        ) {
+
+          checkoutNameOverlay.classList.remove(
+            "show"
+          );
+
+        }
+
+
+        if (
+          checkoutOverlay
+        ) {
+
+          checkoutOverlay.classList.remove(
+            "show"
+          );
+
+        }
+
+
+        keranjang = [];
+
+
+        simpanKeranjang();
+
+
+        updateCartCount();
+
+
+        alert(
+          "Pesanan berhasil dibuat.\n\n" +
+          "Kode Order: " +
+          result.data.kode_order
+        );
+
+
+        kunciScrollPopup(
+          false
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Gagal menyimpan order:",
+          error
+        );
+
+
+        alert(
+          "Pesanan gagal disimpan. Silakan coba lagi."
+        );
+
+      }
+
+    }
+
+
     function tutupCheckout(
       event
     ) {
