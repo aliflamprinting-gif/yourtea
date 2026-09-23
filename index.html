@@ -1313,6 +1313,111 @@
       margin-bottom: 12px;
     }
 
+    /* STATUS PESANAN */
+
+    .order-status-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(5px);
+    }
+
+
+    .order-status-overlay.show {
+      display: flex;
+    }
+
+
+    .order-status-box {
+      width: 100%;
+      max-width: 360px;
+      padding: 28px 22px 22px;
+      background: #ffffff;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+
+    .order-status-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #159447;
+      color: #ffffff;
+      font-size: 32px;
+      font-weight: 900;
+    }
+
+
+    .order-status-title {
+      font-size: 21px;
+      font-weight: 900;
+      color: #263522;
+    }
+
+
+    .order-status-text {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #7b8575;
+    }
+
+
+    .order-status-code {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #f3f9e9;
+      color: #40551d;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+
+    .order-status-button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: #159447;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+
+    .order-loading-spinner {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+      display: inline-block;
+      vertical-align: middle;
+      border: 3px solid rgba(255, 255, 255, 0.4);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: orderSpin 0.8s linear infinite;
+    }
+
+
+    @keyframes orderSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
     /* POPUP PILIH JENIS MENU */
 
@@ -2905,8 +3010,60 @@
     </div>
 
 
-    <!-- POPUP PILIH JENIS MENU -->
+    <!-- POPUP STATUS PESANAN -->
+    <div
+      class="order-status-overlay"
+      id="orderStatusOverlay"
+    >
 
+      <div
+        class="order-status-box"
+        onclick="event.stopPropagation()"
+      >
+
+        <div
+          class="order-status-icon"
+          id="orderStatusIcon"
+        >
+          ✓
+        </div>
+
+
+        <div
+          class="order-status-title"
+          id="orderStatusTitle"
+        >
+          Pesanan Berhasil!
+        </div>
+
+
+        <div
+          class="order-status-text"
+          id="orderStatusText"
+        >
+          Pesanan kamu sudah berhasil dibuat.
+        </div>
+
+
+        <div
+          class="order-status-code"
+          id="orderStatusCode"
+        >
+          -
+        </div>
+
+
+        <button
+          type="button"
+          class="order-status-button"
+          onclick="tutupStatusPesanan()"
+        >
+          OKE, SIAP!
+        </button>
+
+      </div>
+
+    </div>
 
     <!-- POPUP PILIH JENIS MENU -->
     <div
@@ -6661,6 +6818,25 @@
         );
 
 
+      const tombolLanjutkan =
+        document.querySelector(
+          "#checkoutNameOverlay .checkout-submit"
+        );
+
+
+      if (tombolLanjutkan) {
+
+        tombolLanjutkan.disabled =
+          true;
+
+        tombolLanjutkan.innerHTML = `
+          <span class="order-loading-spinner"></span>
+          MEMPROSES PESANAN...
+        `;
+
+      }
+
+
       try {
 
         const params =
@@ -6705,12 +6881,10 @@
           "success"
         ) {
 
-          alert(
+          throw new Error(
             result.message ||
             "Pesanan gagal disimpan."
           );
-
-          return;
 
         }
 
@@ -6737,6 +6911,7 @@
 
 
         riwayat.unshift({
+
           id_order:
             result.data.id_order,
 
@@ -6816,15 +6991,37 @@
         updateCartCount();
 
 
-        alert(
-          "Pesanan berhasil dibuat.\n\n" +
-          "Kode Order: " +
-          result.data.kode_order
-        );
+        const statusOverlay =
+          document.getElementById(
+            "orderStatusOverlay"
+          );
+
+
+        const statusCode =
+          document.getElementById(
+            "orderStatusCode"
+          );
+
+
+        if (statusCode) {
+
+          statusCode.textContent =
+            result.data.kode_order;
+
+        }
+
+
+        if (statusOverlay) {
+
+          statusOverlay.classList.add(
+            "show"
+          );
+
+        }
 
 
         kunciScrollPopup(
-          false
+          true
         );
 
 
@@ -6837,10 +7034,47 @@
 
 
         alert(
+          error.message ||
           "Pesanan gagal disimpan. Silakan coba lagi."
         );
 
+      } finally {
+
+        if (tombolLanjutkan) {
+
+          tombolLanjutkan.disabled =
+            false;
+
+          tombolLanjutkan.textContent =
+            "LANJUTKAN";
+
+        }
+
       }
+
+    }
+
+
+    function tutupStatusPesanan() {
+
+      const statusOverlay =
+        document.getElementById(
+          "orderStatusOverlay"
+        );
+
+
+      if (statusOverlay) {
+
+        statusOverlay.classList.remove(
+          "show"
+        );
+
+      }
+
+
+      kunciScrollPopup(
+        false
+      );
 
     }
 
