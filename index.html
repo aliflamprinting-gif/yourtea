@@ -1270,9 +1270,216 @@
       color: #159447;
     }
 
-    .pesanan-status.kadaluarsa {
-      background: #f1f1f1;
-      color: #8a8a8a;
+    /* HALAMAN TUNJUKKAN KE KASIR */
+
+    .kasir-page {
+      display: none;
+      width: 100%;
+      max-width: 520px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 0 16px 40px;
+      background: #ffffff;
+      color: #1f2d17;
+    }
+
+    .kasir-page.show {
+      display: block;
+    }
+
+    .kasir-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      width: calc(100% + 32px);
+      margin-left: -16px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #eeeeee;
+      text-align: center;
+    }
+
+    .kasir-logo {
+      display: block;
+      width: 92px;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .kasir-content {
+      min-height: calc(100vh - 90px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 35px 20px 50px;
+      text-align: center;
+    }
+
+    .kasir-label {
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #7b8575;
+      letter-spacing: 0.5px;
+    }
+
+    .kasir-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: #202d1b;
+      margin-bottom: 22px;
+    }
+
+    .kasir-code {
+      width: 100%;
+      padding: 22px 16px;
+      border-radius: 20px;
+      background: #f3f9e9;
+      border: 1px solid #dcebb7;
+      color: #159447;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      word-break: break-word;
+    }
+
+    .kasir-info {
+      margin-top: 18px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #7b8575;
+    }
+
+    .kasir-detail-button {
+      width: 100%;
+      margin-top: 28px;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: #159447;
+      color: white;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .kasir-back-button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 13px;
+      border: 1px solid #dce5d7;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #596453;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    /* POPUP RINCIAN PESANAN KASIR */
+
+    .kasir-detail-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 210;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.42);
+      backdrop-filter: blur(4px);
+    }
+
+    .kasir-detail-overlay.show {
+      display: flex;
+    }
+
+    .kasir-detail-box {
+      width: 100%;
+      max-width: 520px;
+      max-height: 82vh;
+      overflow-y: auto;
+      padding: 20px 16px 24px;
+      background: #ffffff;
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    .kasir-detail-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    .kasir-detail-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #202d1b;
+    }
+
+    .kasir-detail-close {
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: #e74c3c;
+      color: white;
+      font-size: 21px;
+      font-weight: 900;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .kasir-detail-list {
+      padding-top: 14px;
+    }
+
+    .kasir-detail-item {
+      padding: 13px 0;
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    .kasir-detail-item:last-child {
+      border-bottom: none;
+    }
+
+    .kasir-detail-item-name {
+      font-size: 15px;
+      font-weight: 900;
+      color: #263522;
+    }
+
+    .kasir-detail-item-info {
+      margin-top: 5px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #7b8575;
+    }
+
+    .kasir-detail-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+      padding-top: 14px;
+      border-top: 1px solid #dddddd;
+    }
+
+    .kasir-detail-total-label {
+      font-size: 14px;
+      font-weight: 800;
+      color: #7b8575;
+    }
+
+    .kasir-detail-total-value {
+      font-size: 18px;
+      font-weight: 900;
+      color: #159447;
     }
 
         /* POPUP PEMESANAN */
@@ -3082,6 +3289,116 @@
       </nav>
 
     </section>
+
+
+    <!-- HALAMAN TUNJUKKAN KE KASIR -->
+
+    <section
+      class="kasir-page"
+      id="kasirPage"
+    >
+
+      <div class="kasir-topbar">
+
+        <img
+          src="yourtea-logo.png.png"
+          alt="YourTea"
+          class="kasir-logo"
+        >
+
+      </div>
+
+
+      <div class="kasir-content">
+
+        <div class="kasir-label">
+          TUNJUKKAN KE KASIR
+        </div>
+
+
+        <div class="kasir-title">
+          Kode Pesanan
+        </div>
+
+
+        <div
+          class="kasir-code"
+          id="kasirKodeOrder"
+        >
+          -
+        </div>
+
+
+        <div
+          class="kasir-info"
+          id="kasirInfoOrder"
+        >
+          Tunjukkan kode pesanan ini kepada kasir.
+        </div>
+
+
+        <button
+          type="button"
+          class="kasir-detail-button"
+          onclick="bukaRincianPesananKasir()"
+        >
+          RINCIAN PESANAN
+        </button>
+
+
+        <button
+          type="button"
+          class="kasir-back-button"
+          onclick="kembaliDariKasir()"
+        >
+          KEMBALI
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- POPUP RINCIAN PESANAN KASIR -->
+
+    <div
+      class="kasir-detail-overlay"
+      id="kasirDetailOverlay"
+      onclick="tutupRincianPesananKasir(event)"
+    >
+
+      <div
+        class="kasir-detail-box"
+        onclick="event.stopPropagation()"
+      >
+
+        <div class="kasir-detail-header">
+
+          <div class="kasir-detail-title">
+            Rincian Pesanan
+          </div>
+
+
+          <button
+            type="button"
+            class="kasir-detail-close"
+            onclick="tutupRincianPesananKasir()"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <div
+          class="kasir-detail-list"
+          id="kasirDetailList"
+        >
+        </div>
+
+      </div>
+
+    </div>
 
 
     <!-- POPUP DETAIL MENU -->
@@ -7818,13 +8135,307 @@
 
       const kode =
         statusCode
-          ? statusCode.textContent
+          ? statusCode.textContent.trim()
           : "";
 
-      alert(
-        "Tunjukkan kode pesanan ini kepada kasir:\n\n" +
-        kode
+      const riwayat =
+        JSON.parse(
+          localStorage.getItem(
+            "yourtea_riwayat"
+          ) ||
+          "[]"
+        );
+
+      const order =
+        riwayat.find(
+          function(item) {
+            return String(
+              item.kode_order || ""
+            ).trim() === kode;
+          }
+        );
+
+      if (!order) {
+
+        alert(
+          "Data pesanan tidak ditemukan."
+        );
+
+        return;
+
+      }
+
+      localStorage.setItem(
+        "YT_ORDER_KASIR",
+        JSON.stringify(
+          order
+        )
       );
+
+
+      document.getElementById(
+        "orderStatusOverlay"
+      ).classList.remove(
+        "show"
+      );
+
+
+      kunciScrollPopup(
+        false
+      );
+
+
+      document.querySelector(
+        ".content"
+      ).style.display =
+        "none";
+
+      document.querySelector(
+        ".visual-footer"
+      ).style.display =
+        "none";
+
+      document.getElementById(
+        "homePage"
+      ).classList.remove(
+        "show"
+      );
+
+      document.getElementById(
+        "menuPage"
+      ).classList.remove(
+        "show"
+      );
+
+      document.getElementById(
+        "pesananPage"
+      ).classList.remove(
+        "show"
+      );
+
+      document.getElementById(
+        "kasirPage"
+      ).classList.add(
+        "show"
+      );
+
+
+      renderHalamanKasir();
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+    }
+
+    function renderHalamanKasir() {
+
+      const order =
+        JSON.parse(
+          localStorage.getItem(
+            "YT_ORDER_KASIR"
+          ) ||
+          "null"
+        );
+
+      if (!order) {
+        return;
+      }
+
+      const kode =
+        document.getElementById(
+          "kasirKodeOrder"
+        );
+
+      const info =
+        document.getElementById(
+          "kasirInfoOrder"
+        );
+
+      if (kode) {
+
+        kode.textContent =
+          order.kode_order ||
+          "-";
+
+      }
+
+      if (info) {
+
+        info.textContent =
+          (
+            order.nama_cabang ||
+            "YourTea"
+          ) +
+          " • " +
+          (
+            order.nama_pelanggan ||
+            "-"
+          );
+
+      }
+
+    }
+
+
+    function bukaRincianPesananKasir() {
+
+      const order =
+        JSON.parse(
+          localStorage.getItem(
+            "YT_ORDER_KASIR"
+          ) ||
+          "null"
+        );
+
+      if (!order) {
+        return;
+      }
+
+      const list =
+        document.getElementById(
+          "kasirDetailList"
+        );
+
+      if (!list) {
+        return;
+      }
+
+      const items =
+        Array.isArray(
+          order.items
+        )
+          ? order.items
+          : [];
+
+      list.innerHTML =
+        items.map(
+          function(item) {
+
+            const variasi =
+              item.nama_variasi
+                ? item.nama_variasi
+                : "";
+
+            const topping =
+              Array.isArray(
+                item.topping
+              ) &&
+              item.topping.length > 0
+                ? "Topping: " +
+                  item.topping
+                    .map(
+                      function(topping) {
+                        return topping.nama_topping;
+                      }
+                    )
+                    .join(", ")
+                : "";
+
+            const infoItem =
+              [
+                variasi,
+                "Qty " +
+                  Number(
+                    item.qty || 0
+                  ),
+                topping
+              ]
+                .filter(
+                  function(value) {
+                    return value;
+                  }
+                )
+                .join(" • ");
+
+            return `
+
+              <div class="kasir-detail-item">
+
+                <div class="kasir-detail-item-name">
+                  ${escapeHTML(
+                    item.nama_menu ||
+                    ""
+                  )}
+                </div>
+
+                <div class="kasir-detail-item-info">
+                  ${escapeHTML(
+                    infoItem
+                  )}
+                </div>
+
+              </div>
+
+            `;
+
+          }
+        ).join("");
+
+
+      list.innerHTML += `
+
+        <div class="kasir-detail-total">
+
+          <div class="kasir-detail-total-label">
+            Total
+          </div>
+
+          <div class="kasir-detail-total-value">
+            Rp${Number(
+              order.total || 0
+            ).toLocaleString(
+              "id-ID"
+            )}
+          </div>
+
+        </div>
+
+      `;
+
+
+      document.getElementById(
+        "kasirDetailOverlay"
+      ).classList.add(
+        "show"
+      );
+
+    }
+
+
+    function tutupRincianPesananKasir(
+      event
+    ) {
+
+      if (
+        event &&
+        event.target !==
+          event.currentTarget
+      ) {
+
+        return;
+
+      }
+
+      document.getElementById(
+        "kasirDetailOverlay"
+      ).classList.remove(
+        "show"
+      );
+
+    }
+
+
+    function kembaliDariKasir() {
+
+      document.getElementById(
+        "kasirPage"
+      ).classList.remove(
+        "show"
+      );
+
+      bukaPesananSaya();
 
     }
 
