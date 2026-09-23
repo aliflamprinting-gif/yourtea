@@ -5261,7 +5261,8 @@
 
     }
 
-    function renderPesananSaya() {
+
+function renderPesananSaya() {
 
       const content =
         document.querySelector(
@@ -5358,46 +5359,6 @@
                   ? "AKTIF"
                   : "KADALUARSA";
 
-              const items =
-                Array.isArray(
-                  order.items
-                )
-                  ? order.items
-                  : [];
-
-              const rincianItems =
-                items.map(
-                  function(item) {
-
-                    const variasi =
-                      item.nama_variasi
-                        ? " • " +
-                          item.nama_variasi
-                        : "";
-
-                    return `
-                      <div class="pesanan-item-row">
-
-                        <div class="pesanan-item-name">
-                          ${escapeHTML(
-                            item.nama_menu
-                          )}${escapeHTML(
-                            variasi
-                          )}
-                        </div>
-
-                        <div class="pesanan-item-qty">
-                          x${Number(
-                            item.qty || 0
-                          )}
-                        </div>
-
-                      </div>
-                    `;
-
-                  }
-                ).join("");
-
               return `
 
                 <div class="pesanan-card">
@@ -5444,13 +5405,6 @@
                   </div>
 
 
-                  <div class="pesanan-items">
-
-                    ${rincianItems}
-
-                  </div>
-
-
                   <div class="pesanan-card-bottom">
 
                     <div>
@@ -5475,12 +5429,20 @@
                           <button
                             type="button"
                             class="pesanan-order-again"
+                            onclick="tunjukanPesananKeKasir(${index})"
+                          >
+                            TUNJUKAN KE KASIR
+                          </button>
+                        `
+                        : `
+                          <button
+                            type="button"
+                            class="pesanan-order-again"
                             onclick="pesanLagi(${index})"
                           >
                             PESAN LAGI
                           </button>
                         `
-                        : ""
                     }
 
                   </div>
@@ -5499,7 +5461,7 @@
     }
 
 
-    function pesanLagi(
+function pesanLagi(
       index
     ) {
 
@@ -5531,7 +5493,7 @@
           tanggal.getTime() <
         60 * 60 * 1000;
 
-      if (!aktif) {
+      if (aktif) {
 
         renderPesananSaya();
 
@@ -5570,6 +5532,8 @@
       bukaKeranjang();
 
     }
+
+
 
     
     /* BUKA BERANDA */
