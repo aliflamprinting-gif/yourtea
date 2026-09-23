@@ -1048,6 +1048,95 @@
       color: #159447;
     }
 
+        /* HALAMAN PESANAN SAYA */
+
+    .pesanan-page {
+      display: none;
+      width: 100%;
+      max-width: 520px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 0 16px 95px;
+      background: #ffffff;
+      color: #1f2d17;
+    }
+
+    .pesanan-page.show {
+      display: block;
+    }
+
+    .pesanan-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      width: calc(100% + 32px);
+      margin-left: -16px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    .pesanan-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #202d1b;
+      text-align: center;
+    }
+
+    .pesanan-content {
+      min-height: calc(100vh - 75px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px 20px 100px;
+    }
+
+    .pesanan-empty {
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .pesanan-empty-icon {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #eaf5df;
+      font-size: 38px;
+    }
+
+    .pesanan-empty-title {
+      font-size: 19px;
+      font-weight: 900;
+      color: #263522;
+      margin-bottom: 8px;
+    }
+
+    .pesanan-empty-text {
+      font-size: 14px;
+      line-height: 1.55;
+      color: #7b8575;
+      margin-bottom: 20px;
+    }
+
+    .pesanan-empty-button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 14px;
+      background: #159447;
+      color: white;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+
         /* POPUP PEMESANAN */
 
     .checkout-overlay {
@@ -2551,14 +2640,14 @@
 
         <button
           class="menu-nav-button"
-          onclick="bukaKeranjang()"
+          onclick="bukaPesananSaya()"
         >
 
           <span class="menu-nav-icon">
-            🛒
+            📋
           </span>
 
-          Keranjang
+          Pesanan Saya
 
         </button>
 
@@ -2726,14 +2815,110 @@
 
         <button
           class="menu-nav-button"
-          onclick="bukaKeranjang()"
+          onclick="bukaPesananSaya()"
         >
 
           <span class="menu-nav-icon">
-            🛒
+            📋
           </span>
 
-          Keranjang
+          Pesanan Saya
+
+        </button>
+
+      </nav>
+
+    </section>
+
+
+    <!-- HALAMAN PESANAN SAYA -->
+
+    <section
+      class="pesanan-page"
+      id="pesananPage"
+    >
+
+      <div class="pesanan-topbar">
+
+        <div class="pesanan-title">
+          Pesanan Saya
+        </div>
+
+      </div>
+
+
+      <div class="pesanan-content">
+
+        <div class="pesanan-empty">
+
+          <div class="pesanan-empty-icon">
+            📋
+          </div>
+
+
+          <div class="pesanan-empty-title">
+            Belum Ada Pesanan
+          </div>
+
+
+          <div class="pesanan-empty-text">
+            Pesanan yang kamu buat akan muncul di sini.
+          </div>
+
+
+          <button
+            type="button"
+            class="pesanan-empty-button"
+            onclick="bukaMenu()"
+          >
+            LIHAT MENU
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <nav class="menu-bottom-nav">
+
+        <button
+          class="menu-nav-button"
+          onclick="bukaBeranda()"
+        >
+
+          <span class="menu-nav-icon">
+            🏠
+          </span>
+
+          Beranda
+
+        </button>
+
+
+        <button
+          class="menu-nav-button"
+          onclick="bukaMenu()"
+        >
+
+          <span class="menu-nav-icon">
+            ▦
+          </span>
+
+          Menu
+
+        </button>
+
+
+        <button
+          class="menu-nav-button active"
+          onclick="bukaPesananSaya()"
+        >
+
+          <span class="menu-nav-icon">
+            📋
+          </span>
+
+          Pesanan Saya
 
         </button>
 
@@ -4545,6 +4730,50 @@
       );
 
     }
+
+        function bukaPesananSaya() {
+
+      document.querySelector(
+        ".content"
+      ).style.display =
+        "none";
+
+
+      document.querySelector(
+        ".visual-footer"
+      ).style.display =
+        "none";
+
+
+      document.getElementById(
+        "homePage"
+      ).classList.remove(
+        "show"
+      );
+
+
+      document.getElementById(
+        "menuPage"
+      ).classList.remove(
+        "show"
+      );
+
+
+      document.getElementById(
+        "pesananPage"
+      ).classList.add(
+        "show"
+      );
+
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+    }
+
+
     
     /* BUKA BERANDA */
 
