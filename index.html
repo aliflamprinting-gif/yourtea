@@ -1078,14 +1078,22 @@
       z-index: 20;
       width: calc(100% + 32px);
       margin-left: -16px;
-      padding: 16px;
+      padding: 12px 16px 14px;
       background: rgba(255, 255, 255, 0.97);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid #eeeeee;
+      text-align: center;
+    }
+
+    .pesanan-logo {
+      display: block;
+      width: 92px;
+      height: auto;
+      margin: 0 auto 7px;
     }
 
     .pesanan-title {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 900;
       color: #202d1b;
       text-align: center;
@@ -1246,6 +1254,26 @@
       color: #159447;
     }
 
+    .pesanan-order-again {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 14px;
+      background: #159447;
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .pesanan-status.aktif {
+      background: #eaf5df;
+      color: #159447;
+    }
+
+    .pesanan-status.kadaluarsa {
+      background: #f1f1f1;
+      color: #8a8a8a;
+    }
 
         /* POPUP PEMESANAN */
 
@@ -2963,6 +2991,12 @@
 
       <div class="pesanan-topbar">
 
+        <img
+          src="yourtea-logo.png.png"
+          alt="YourTea"
+          class="pesanan-logo"
+        >
+
         <div class="pesanan-title">
           Pesanan Saya
         </div>
@@ -3889,6 +3923,13 @@
 
       document.getElementById(
         "homePage"
+      ).classList.remove(
+        "show"
+      );
+
+
+      document.getElementById(
+        "pesananPage"
       ).classList.remove(
         "show"
       );
@@ -4964,7 +5005,7 @@
         <div class="pesanan-list">
 
           ${riwayat.map(
-            function(order) {
+            function(order, index) {
 
               const tanggal =
                 new Date(
@@ -4989,6 +5030,16 @@
                     minute: "2-digit"
                   }
                 );
+
+              const aktif =
+                Date.now() -
+                  tanggal.getTime() <
+                60 * 60 * 1000;
+
+              const status =
+                aktif
+                  ? "AKTIF"
+                  : "KADALUARSA";
 
               const items =
                 Array.isArray(
@@ -5053,11 +5104,14 @@
 
                     </div>
 
-                    <div class="pesanan-status">
-                      ${escapeHTML(
-                        order.status ||
-                        "AKTIF"
-                      )}
+                    <div
+                      class="pesanan-status ${
+                        aktif
+                          ? "aktif"
+                          : "kadaluarsa"
+                      }"
+                    >
+                      ${status}
                     </div>
 
                   </div>
@@ -5082,17 +5136,35 @@
 
                   <div class="pesanan-card-bottom">
 
-                    <div class="pesanan-total-label">
-                      Total
+                    <div>
+
+                      <div class="pesanan-total-label">
+                        Total
+                      </div>
+
+                      <div class="pesanan-total">
+                        Rp${Number(
+                          order.total || 0
+                        ).toLocaleString(
+                          "id-ID"
+                        )}
+                      </div>
+
                     </div>
 
-                    <div class="pesanan-total">
-                      Rp${Number(
-                        order.total || 0
-                      ).toLocaleString(
-                        "id-ID"
-                      )}
-                    </div>
+                    ${
+                      aktif
+                        ? `
+                          <button
+                            type="button"
+                            class="pesanan-order-again"
+                            onclick="pesanLagi(${index})"
+                          >
+                            PESAN LAGI
+                          </button>
+                        `
+                        : ""
+                    }
 
                   </div>
 
@@ -5106,6 +5178,79 @@
         </div>
 
       `;
+
+    }
+
+
+    function pesanLagi(
+      index
+    ) {
+
+      const riwayat =
+        JSON.parse(
+          localStorage.getItem(
+            "yourtea_riwayat"
+          ) ||
+          "[]"
+        );
+
+      if (
+        !Array.isArray(riwayat) ||
+        !riwayat[index]
+      ) {
+        return;
+      }
+
+      const order =
+        riwayat[index];
+
+      const tanggal =
+        new Date(
+          order.tanggal_order
+        );
+
+      const aktif =
+        Date.now() -
+          tanggal.getTime() <
+        60 * 60 * 1000;
+
+      if (!aktif) {
+
+        renderPesananSaya();
+
+        return;
+
+      }
+
+      if (
+        !Array.isArray(
+          order.items
+        ) ||
+        order.items.length === 0
+      ) {
+
+        alert(
+          "Detail pesanan tidak tersedia."
+        );
+
+        return;
+
+      }
+
+      keranjang =
+        JSON.parse(
+          JSON.stringify(
+            order.items
+          )
+        );
+
+      simpanKeranjang();
+
+      updateCartCount();
+
+      bukaMenu();
+
+      bukaKeranjang();
 
     }
 
@@ -5128,6 +5273,13 @@
 
       document.getElementById(
         "menuPage"
+      ).classList.remove(
+        "show"
+      );
+
+
+      document.getElementById(
+        "pesananPage"
       ).classList.remove(
         "show"
       );
@@ -7060,7 +7212,7 @@
                       }
                     )
                     .join(", ")
-                : "Tanpa topping";
+                : "";
 
 
             const itemElement =
