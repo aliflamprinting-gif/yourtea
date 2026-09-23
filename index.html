@@ -6125,8 +6125,233 @@
       }
 
 
-      alert(
-        "Checkout akan kita buat di tahap berikutnya."
+      const checkoutOverlay =
+        document.getElementById(
+          "checkoutOverlay"
+        );
+
+
+      const checkoutNama =
+        document.getElementById(
+          "checkoutNama"
+        );
+
+
+      const checkoutOutlet =
+        document.getElementById(
+          "checkoutOutlet"
+        );
+
+
+      const checkoutOrderList =
+        document.getElementById(
+          "checkoutOrderList"
+        );
+
+
+      const checkoutTotal =
+        document.getElementById(
+          "checkoutTotal"
+        );
+
+
+      const checkoutCatatan =
+        document.getElementById(
+          "checkoutCatatan"
+        );
+
+
+      const namaCabang =
+        localStorage.getItem(
+          "YT_NAMA_CABANG"
+        );
+
+
+      if (checkoutNama) {
+
+        checkoutNama.value =
+          localStorage.getItem(
+            "YT_NAMA_PELANGGAN"
+          ) || "";
+
+      }
+
+
+      if (checkoutOutlet) {
+
+        checkoutOutlet.textContent =
+          namaCabang ||
+          "Belum memilih outlet";
+
+      }
+
+
+      if (checkoutCatatan) {
+
+        checkoutCatatan.value =
+          localStorage.getItem(
+            "YT_CATATAN_ORDER"
+          ) || "";
+
+      }
+
+
+      if (checkoutOrderList) {
+
+        checkoutOrderList.innerHTML = "";
+
+
+        keranjang.forEach(
+          function(item) {
+
+            const toppingText =
+              Array.isArray(
+                item.topping
+              ) &&
+              item.topping.length > 0
+                ? "Topping: " +
+                  item.topping
+                    .map(
+                      function(topping) {
+                        return topping.nama_topping;
+                      }
+                    )
+                    .join(", ")
+                : "Tanpa topping";
+
+
+            const itemElement =
+              document.createElement(
+                "div"
+              );
+
+
+            itemElement.className =
+              "checkout-order-item";
+
+
+            itemElement.innerHTML = `
+
+              <div class="checkout-order-item-top">
+
+                <div class="checkout-order-item-name">
+                  ${escapeHTML(
+                    item.nama_menu || ""
+                  )}
+                </div>
+
+                <div class="checkout-order-item-price">
+                  Rp${Number(
+                    item.total || 0
+                  ).toLocaleString("id-ID")}
+                </div>
+
+              </div>
+
+
+              <div class="checkout-order-item-detail">
+
+                ${
+                  item.nama_variasi
+                    ? escapeHTML(
+                        item.nama_variasi
+                      ) +
+                      " • "
+                    : ""
+                }
+
+                Qty ${Number(
+                  item.qty || 0
+                )}
+
+                <br>
+
+                ${escapeHTML(
+                  toppingText
+                )}
+
+              </div>
+
+            `;
+
+
+            checkoutOrderList.appendChild(
+              itemElement
+            );
+
+          }
+        );
+
+      }
+
+
+      const totalPesanan =
+        keranjang.reduce(
+          function(total, item) {
+
+            return (
+              total +
+              Number(
+                item.total || 0
+              )
+            );
+
+          },
+          0
+        );
+
+
+      if (checkoutTotal) {
+
+        checkoutTotal.textContent =
+          "Rp" +
+          totalPesanan.toLocaleString(
+            "id-ID"
+          );
+
+      }
+
+
+      checkoutOverlay.classList.add(
+        "show"
+      );
+
+
+      kunciScrollPopup(
+        true
+      );
+
+    }
+
+
+    function tutupCheckout(
+      event
+    ) {
+
+      if (
+        event &&
+        event.target !==
+          event.currentTarget
+      ) {
+
+        return;
+
+      }
+
+
+      const checkoutOverlay =
+        document.getElementById(
+          "checkoutOverlay"
+        );
+
+
+      checkoutOverlay.classList.remove(
+        "show"
+      );
+
+
+      kunciScrollPopup(
+        false
       );
 
     }
