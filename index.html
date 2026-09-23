@@ -1245,6 +1245,70 @@
     }
 
 
+    /* POPUP INPUT NAMA */
+
+    .checkout-name-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 96;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.42);
+      backdrop-filter: blur(4px);
+    }
+
+
+    .checkout-name-overlay.show {
+      display: flex;
+    }
+
+
+    .checkout-name-box {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      padding: 24px 20px 20px;
+      background: #ffffff;
+      border-radius: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    }
+
+
+    .checkout-name-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: #e74c3c;
+      color: white;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+
+    .checkout-name-title {
+      padding-right: 42px;
+      font-size: 20px;
+      font-weight: 900;
+      color: #202d1b;
+    }
+
+
+    .checkout-name-text {
+      margin-top: 8px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #7b8575;
+    }
+
+
     /* POPUP PILIH JENIS MENU */
 
     .jenis-menu-overlay {
@@ -6360,6 +6424,68 @@
       kunciScrollPopup(
         true
       );
+
+    }
+
+        function konfirmasiPesanan() {
+
+      const checkoutNameOverlay =
+        document.getElementById(
+          "checkoutNameOverlay"
+        );
+
+      if (!checkoutNameOverlay) {
+        return;
+      }
+
+
+      checkoutNameOverlay.classList.add(
+        "show"
+      );
+
+
+      const checkoutNama =
+        document.getElementById(
+          "checkoutNama"
+        );
+
+
+      if (checkoutNama) {
+
+        checkoutNama.focus();
+
+      }
+
+    }
+
+    function tutupInputNama(
+      event
+    ) {
+
+      if (
+        event &&
+        event.target !==
+          event.currentTarget
+      ) {
+
+        return;
+
+      }
+
+
+      const checkoutNameOverlay =
+        document.getElementById(
+          "checkoutNameOverlay"
+        );
+
+
+      if (checkoutNameOverlay) {
+
+        checkoutNameOverlay.classList.remove(
+          "show"
+        );
+
+      }
 
     }
 
