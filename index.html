@@ -43,7 +43,6 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
     }
 
     .content {
@@ -4462,7 +4461,23 @@
 
       muatKeranjang();
 
-      loadMenu();
+      if (
+        menuSudahDimuat &&
+        Array.isArray(
+          semuaMenu
+        ) &&
+        semuaMenu.length > 0
+      ) {
+
+        buatDaftarJenis();
+
+        renderMenu();
+
+      } else {
+
+        loadMenu();
+
+      }
 
 
       window.scrollTo(
@@ -4618,6 +4633,9 @@
           menuV1
         );
 
+        menuSudahDimuat =
+          true;
+
       } catch (error) {
 
         console.error(error);
@@ -4640,6 +4658,8 @@
     let semuaMenu = [];
 
     let semuaTopping = [];
+
+    let menuSudahDimuat = false;
 
     let jenisAktif = "SEMUA";
 
